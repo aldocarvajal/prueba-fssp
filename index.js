@@ -99,13 +99,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Botón de login con Google
-  document.getElementById("login-google").addEventListener("click", async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-    if (error) console.error("Error en login:", error.message);
+document.getElementById("login-google").addEventListener("click", async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "https://aldocarvajal.github.io/prueba-fssp/"
+    }
   });
+  if (error) console.error("Error en login:", error.message);
+});
+
 
   // Botón de logout
   document.getElementById("logout").addEventListener("click", async () => {
