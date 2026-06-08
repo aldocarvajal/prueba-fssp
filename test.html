@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Test Supabase</title></head>
+<body>
+  <button id="login-google">Login con Google</button>
+  <button id="logout" style="display:none;">Logout</button>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const supabase = createClient("https://hlgzkqnqpjlwnaiduxcc.supabase.co","TU_ANON_KEY");
+
+    function updateUI(session) {
+      if (session) {
+        document.getElementById("login-google").style.display = "none";
+        document.getElementById("logout").style.display = "block";
+        console.log("Usuario logueado:", session.user.email);
+      } else {
+        document.getElementById("login-google").style.display = "block";
+        document.getElementById("logout").style.display = "none";
+        console.log("No hay sesión activa");
+      }
+    }
+
+    document.getElementById("login-google").onclick = async () => {
+      await supabase.auth.signInWithOAuth({ provider: "google" });
+    };
+    document.getElementById("logout").onclick = async () => {
+      await supabase.auth.signOut();
+    };
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Evento:", event);
+      updateUI(session);
+    });
+
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      updateUI(session);
+    })();
+  </script>
+</body>
+</html>
