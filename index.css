@@ -274,24 +274,24 @@
 }
 
 .btn-gray {
-  background-color: #6c757d;
+  background-color: #3FDECE;
 }
 .btn-gray:hover {
-  background-color: #4a4e52;
+  background-color: #1EB3A4;
 }
 
 .btn-red {
-  background-color: #b70000;
+  background-color: #5157CD;
 }
 .btn-red:hover {
-  background-color: #A30000;
+  background-color: #2F35A2;
 }
 
 .btn-green {
-  background-color: #00D126;
+  background-color: #3F9FDE;
 }
 .btn-green:hover {
-  background-color: #00A31E;
+  background-color: #2592DA;
 }
 
 /* Responsivo botones */
@@ -332,5 +332,235 @@
     object-fit: contain;
     background: #000;
     display: block;
+  }
+}
+
+/* TARJETAS DE IMPACTO EN NUESTRO TRABAJO */
+/* ENCABEZADO DE IMPACTO */
+.impacto-premium {
+  background: #f5f7fa;
+  padding: 1px 20px 60px; /* antes 60px arriba */
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', 'Montserrat', 'Outfit', 'Plus Jakarta Sans', 'Sora', 'Inter', sans-serif;
+}
+
+.impacto-header {
+  text-align: center;
+  margin-bottom: 40px; /* menos espacio para mayor proximidad */
+}
+
+.impacto-header h2 {
+  font-size: 52px;          /* más grande para presencia visual */
+  font-weight: 800;         /* peso fuerte y moderno */
+  letter-spacing: -0.5px;   /* menor separación entre letras */
+  line-height: 1.1;         /* compacto y elegante */
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, #001f8c, #ff4d6d, #9b5de5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.impacto-header p {
+  font-size: 18px;
+  color: #2c2c2c;           /* gris oscuro elegante */
+  max-width: 640px;         /* ancho controlado para legibilidad */
+  margin: 0 auto;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+
+.impacto-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.blob {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: float 6s ease-in-out infinite;
+  color: #fff; /* texto blanco para contraste */
+  text-align: center;
+}
+
+/* Colores planos para cada blob */
+.blob:nth-child(1) {
+  background-color: #CED219; /* amarillo verdoso */
+}
+.blob:nth-child(2) {
+  background-color: #D27919; /* naranja */
+}
+.blob:nth-child(3) {
+  background-color: #b70000; /* rojo coral */
+}
+.blob:nth-child(4) {
+  background-color: #72D219; /* naranja suave */
+}
+
+.blob:nth-child(2) { animation-delay: 1s; }
+.blob:nth-child(3) { animation-delay: 2s; }
+.blob:nth-child(4) { animation-delay: 3s; }
+
+.blob img {
+  height: 50px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.blob .numero {
+  font-size: 36px;
+  font-weight: 900;
+  margin: 10px 0;
+  color: #fff; /* números en blanco */
+}
+
+.blob p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-15px) scale(1.05); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+@media (max-width: 768px) {
+  .impacto-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+/* SECCIÓN TESTIMONIOS PREMIUM */
+.testimonios-premium {
+  background: linear-gradient(135deg, #f5f7fa, #eaeef5);
+  padding: 80px 20px;
+  font-family: 'Plus Jakarta Sans', 'Outfit', 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonios-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.testimonios-header h2 {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, #001f8c, #ff4d6d, #9b5de5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.testimonios-header p {
+  font-size: 18px;
+  color: #2c2c2c;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.testimonios-carousel {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.testimonio {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.testimonio:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+.testimonio .quote {
+  font-size: 80px;
+  color: #9b5de5;
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  opacity: 0.2;
+}
+
+.testimonio p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.persona {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.persona img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.persona h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.persona span {
+  font-size: 14px;
+  color: #666;
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 10px;
+}
+
+.carousel-indicators span {
+  width: 10px;
+  height: 10px;
+  background: #ccc;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background 0.3s ease;
+}
+
+.carousel-indicators span.active {
+  background: #001f8c;
+}
+
+@media (max-width: 768px) {
+  .testimonios-carousel {
+    flex-direction: column;
+    align-items: center;
   }
 }
