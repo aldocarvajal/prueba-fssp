@@ -86,40 +86,40 @@ document.addEventListener("DOMContentLoaded", () => {
   showTestimonio(index);
   setInterval(nextTestimonio, 6000);
 
+  // Función para actualizar la UI según sesión
+  function updateUI(session) {
+    if (session) {
+      document.getElementById("login-google").style.display = "none";
+      document.getElementById("logout").style.display = "block";
+      console.log("Usuario logueado:", session.user);
+    } else {
+      document.getElementById("login-google").style.display = "block";
+      document.getElementById("logout").style.display = "none";
+      console.log("No hay sesión activa");
+    }
+  }
+
   // Botón de login con Google
   document.getElementById("login-google").addEventListener("click", async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
-
-    if (error) {
-      console.error("Error en login:", error.message);
-    } else {
-      console.log("Login iniciado:", data);
-    }
+    if (error) console.error("Error en login:", error.message);
   });
 
   // Botón de logout
   document.getElementById("logout").addEventListener("click", async () => {
     await supabase.auth.signOut();
-    console.log("Sesión cerrada");
-    checkSession();
   });
 
-  // Verificar sesión activa
-  async function checkSession() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (session) {
-      console.log("Usuario logueado:", session.user);
-      document.getElementById("login-google").style.display = "none";
-      document.getElementById("logout").style.display = "block";
-    } else {
-      document.getElementById("login-google").style.display = "block";
-      document.getElementById("logout").style.display = "none";
-    }
-  }
+  // Escuchar cambios de sesión en tiempo real
+  supabase.auth.onAuthStateChange((_event, session) => {
+    updateUI(session);
+  });
 
-  checkSession();
+  // Revisar sesión al cargar la página
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    updateUI(session);
+  })();
 });
