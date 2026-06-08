@@ -113,13 +113,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Escuchar cambios de sesión en tiempo real
-  supabase.auth.onAuthStateChange((_event, session) => {
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log("Evento de auth:", event, session);
     updateUI(session);
   });
 
-  // Revisar sesión al cargar la página
+  // Revisar sesión al cargar la página y procesar fragmento #access_token
   (async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    updateUI(session);
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    if (hashParams.has("access_token")) {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) console.error("Error al obtener sesión:", error.message);
+      console.log("Sesión procesada:", data.session);
+      updateUI(data.session);
+      // Limpiar el fragmento de la URL para evitar el 404
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+      const { data: { session } } = await supabase.auth.getSession();
+      updateUI(session);
+    }
   })();
 });
