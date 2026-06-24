@@ -638,26 +638,39 @@
   font-weight: bold;
 }
 
+/* Menú desplegable del perfil */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 50px;
   left: 0;
-  background: #b70000;
-  padding: 10px;
-  border-radius: 6px;
-  min-width: 180px;
+  background: #ffffff;          /* fondo blanco para contraste */
+  color: #333;                  /* texto oscuro para legibilidad */
+  padding: 12px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dropdown-menu a, .dropdown-menu p {
   display: block;
-  color: white;
   text-decoration: none;
-  margin: 8px 0;
+  margin: 10px 0;
   font-size: 14px;
+  font-weight: 500;
+  color: #333;
 }
 
-.avatar-container.active + #welcome-text + .dropdown-menu {
-  display: block;
+.dropdown-menu a:hover {
+  color: #b70000;               /* hover rojo para resaltar */
 }

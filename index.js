@@ -63,19 +63,21 @@ function updateUI(session) {
 
     const user = session.user;
     const fullName = user.user_metadata.full_name || user.email;
-    const photo = user.user_metadata.avatar_url;
+const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
 
-    if (photo) {
-      avatar.src = photo;
-      avatar.style.display = "block";
-      initials.style.display = "none";
-    } else {
-      avatar.style.display = "none";
-      const parts = fullName.split(" ");
-      const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
-      initials.textContent = letters.toUpperCase();
-      initials.style.display = "flex";
-    }
+
+if (photo) {
+  avatar.src = photo;
+  avatar.style.display = "block";
+  initials.style.display = "none";
+} else {
+  avatar.style.display = "none";
+  const parts = fullName.split(" ");
+  const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+  initials.textContent = letters.toUpperCase();
+  initials.style.display = "flex";
+}
+
 
     welcome.textContent = `Bienvenido ${fullName}`;
     email.textContent = user.email;
@@ -123,4 +125,20 @@ function updateUI(session) {
   document.querySelector(".avatar-container").addEventListener("click", () => {
     document.querySelector(".avatar-container").classList.toggle("active");
   });
+  // Toggle menú desplegable al hacer click en avatar
+const avatarContainer = document.querySelector(".avatar-container");
+const dropdownMenu = document.querySelector(".dropdown-menu");
+
+avatarContainer.addEventListener("click", (e) => {
+  e.stopPropagation(); // evita que se cierre inmediatamente
+  dropdownMenu.classList.toggle("show");
+});
+
+// Cerrar menú al hacer click fuera
+document.addEventListener("click", (e) => {
+  if (!avatarContainer.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    dropdownMenu.classList.remove("show");
+  }
+});
+
 });
