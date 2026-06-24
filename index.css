@@ -592,13 +592,13 @@
   position: relative;
 }
 
-/* Avatar circular moderno */
+/* Contenedor circular del avatar */
 .avatar-container {
   position: relative;
-  width: 48px;
+  width: 48px;       /* tamaño fijo */
   height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 50%; /* círculo perfecto */
+  overflow: hidden;   /* recorta lo que sobresalga */
   cursor: pointer;
   transition: transform 0.3s ease, border 0.3s ease;
   border: 2px solid transparent;
@@ -609,12 +609,15 @@
   border: 2px solid #b70000; /* borde institucional opcional */
 }
 
+/* Imagen dentro del avatar */
 .avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;   /* recorta sin deformar */
+  object-position: center; /* centra la cara */
   display: block;
 }
+
 
 .initials {
   width: 100%;
