@@ -57,34 +57,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const welcome = document.getElementById("welcome-text");
     const email = document.getElementById("user-email");
 
-    if (session) {
-      loginBtn.style.display = "none";
-      profile.style.display = "flex";
+if (session) {
+  loginBtn.style.display = "none";
+  profile.style.display = "flex";
 
-      const user = session.user;
-      const fullName = user.user_metadata.full_name || user.email;
-      const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
+  const user = session.user;
+  const fullName = user.user_metadata.full_name || user.email;
+  const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
 
-      if (photo) {
-        avatar.src = photo;
-        avatar.style.display = "block";
-        initials.style.display = "none";
-      } else {
-        avatar.style.display = "none";
-        const parts = fullName.split(" ");
-        const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
-        initials.textContent = letters.toUpperCase();
-        initials.style.display = "flex";
-      }
+  if (photo) {
+    avatar.src = photo;
+    avatar.style.display = "block";
+    initials.style.display = "none";
+  } else {
+    avatar.style.display = "none";
+    const parts = fullName.split(" ");
+    const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+    initials.textContent = letters.toUpperCase();
+    initials.style.display = "flex";
+  }
 
-      welcome.textContent = `Bienvenido ${fullName}`;
-      email.textContent = user.email; // solo correo en el menú
-      document.getElementById("menu-name").textContent = ""; // no mostrar nombre en menú
-      document.getElementById("menu-email").textContent = user.email;
-    } else {
-      loginBtn.style.display = "block";
-      profile.style.display = "none";
-    }
+  // Texto de bienvenida en el header
+  welcome.textContent = `Bienvenido ${fullName}`;
+
+  // Solo correo en el menú desplegable
+  email.textContent = user.email;
+} else {
+  loginBtn.style.display = "block";
+  profile.style.display = "none";
+}
+
   }
 
   // Botón login
