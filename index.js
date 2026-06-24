@@ -69,19 +69,17 @@ document.addEventListener("DOMContentLoaded", () => {
         avatar.src = photo;
         avatar.style.display = "block";
         initials.style.display = "none";
-        document.getElementById("menu-avatar").src = photo; // foto grande en el menú
       } else {
         avatar.style.display = "none";
         const parts = fullName.split(" ");
         const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
         initials.textContent = letters.toUpperCase();
         initials.style.display = "flex";
-        document.getElementById("menu-avatar").src = ""; // vacío si no hay foto
       }
 
       welcome.textContent = `Bienvenido ${fullName}`;
-      email.textContent = user.email;
-      document.getElementById("menu-name").textContent = fullName;
+      email.textContent = user.email; // solo correo en el menú
+      document.getElementById("menu-name").textContent = ""; // no mostrar nombre en menú
       document.getElementById("menu-email").textContent = user.email;
     } else {
       loginBtn.style.display = "block";
