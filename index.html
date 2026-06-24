@@ -17,30 +17,29 @@
     </div>
 
 <div class="header-right">
+  <!-- Perfil de usuario a la izquierda -->
+  <div id="user-profile" class="user-profile" style="display:none;">
+    <div class="avatar-container">
+      <img id="user-avatar" class="avatar" src="" alt="Avatar">
+      <div id="user-initials" class="avatar initials"></div>
+      <span class="arrow">&#9662;</span>
+    </div>
+    <span id="welcome-text"></span>
+    <div class="dropdown-menu">
+      <p id="user-email"></p>
+      <a href="#">Mis comentarios</a>
+      <a href="#">Mis me gusta</a>
+      <a href="#" id="logout-link">Cerrar sesión</a>
+    </div>
+  </div>
+
+  <!-- Social media a la derecha -->
   <div class="social-menu">
     <img src="assets/images/instablanco.png" alt="Instagram">
     <img src="assets/images/facebookblanco.png" alt="Facebook">
+    <img src="assets/images/whatsappblanco.png" alt="WhatsApp">
     <img src="assets/images/telefonoblanco.png" alt="Teléfono">
-
     <button id="login-google" class="login-link">Iniciar Sesión</button>
-    <button id="logout" class="login-link" style="display:none;">Cerrar Sesión</button>
-
-    <!-- Perfil de usuario -->
-    <div id="user-profile" class="user-profile" style="display:none;">
-      <div class="avatar-container">
-        <img id="user-avatar" class="avatar" src="" alt="Avatar">
-        <div id="user-initials" class="avatar initials"></div>
-        <span class="arrow">&#9662;</span>
-      </div>
-      <span id="welcome-text"></span>
-      <div class="dropdown-menu">
-        <p id="user-email"></p>
-        <a href="#">Mis comentarios</a>
-        <a href="#">Mis me gusta</a>
-        <a href="#" id="logout-link">Cerrar sesión</a>
-      </div>
-    </div>
-
     <button class="hamburger">&#9776;</button>
   </div>
 

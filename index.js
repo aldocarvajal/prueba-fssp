@@ -49,44 +49,41 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(nextTestimonio, 6000);
 
   // Función para actualizar la UI según sesión
-  function updateUI(session) {
-    const loginBtn = document.getElementById("login-google");
-    const logoutBtn = document.getElementById("logout");
-    const profile = document.getElementById("user-profile");
-    const avatar = document.getElementById("user-avatar");
-    const initials = document.getElementById("user-initials");
-    const welcome = document.getElementById("welcome-text");
-    const email = document.getElementById("user-email");
+function updateUI(session) {
+  const loginBtn = document.getElementById("login-google");
+  const profile = document.getElementById("user-profile");
+  const avatar = document.getElementById("user-avatar");
+  const initials = document.getElementById("user-initials");
+  const welcome = document.getElementById("welcome-text");
+  const email = document.getElementById("user-email");
 
-    if (session) {
-      loginBtn.style.display = "none";
-      logoutBtn.style.display = "none";
-      profile.style.display = "flex";
+  if (session) {
+    loginBtn.style.display = "none";
+    profile.style.display = "flex";
 
-      const user = session.user;
-      const fullName = user.user_metadata.full_name || user.email;
-      const photo = user.user_metadata.avatar_url;
+    const user = session.user;
+    const fullName = user.user_metadata.full_name || user.email;
+    const photo = user.user_metadata.avatar_url;
 
-      if (photo) {
-        avatar.src = photo;
-        avatar.style.display = "block";
-        initials.style.display = "none";
-      } else {
-        avatar.style.display = "none";
-        const parts = fullName.split(" ");
-        const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
-        initials.textContent = letters.toUpperCase();
-        initials.style.display = "flex";
-      }
-
-      welcome.textContent = `Bienvenido ${fullName}`;
-      email.textContent = user.email;
+    if (photo) {
+      avatar.src = photo;
+      avatar.style.display = "block";
+      initials.style.display = "none";
     } else {
-      loginBtn.style.display = "block";
-      logoutBtn.style.display = "none";
-      profile.style.display = "none";
+      avatar.style.display = "none";
+      const parts = fullName.split(" ");
+      const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+      initials.textContent = letters.toUpperCase();
+      initials.style.display = "flex";
     }
+
+    welcome.textContent = `Bienvenido ${fullName}`;
+    email.textContent = user.email;
+  } else {
+    loginBtn.style.display = "block";
+    profile.style.display = "none";
   }
+}
 
   // Botón login
   document.getElementById("login-google").addEventListener("click", async () => {
