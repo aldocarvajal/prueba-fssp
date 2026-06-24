@@ -18,32 +18,40 @@
 
 <div class="header-right">
   <div class="social-menu">
+    <!-- Íconos sociales -->
     <img src="assets/images/instablanco.png" alt="Instagram">
     <img src="assets/images/facebookblanco.png" alt="Facebook">
     <img src="assets/images/telefonoblanco.png" alt="Teléfono">
 
+    <!-- Botones de login/logout -->
     <button id="login-google" class="login-link">Iniciar Sesión</button>
     <button id="logout" class="login-link" style="display:none;">Cerrar Sesión</button>
 
-    <!-- Perfil de usuario -->
+    <!-- Perfil de usuario (aparece después de login) -->
     <div id="user-profile" class="user-profile" style="display:none;">
       <div class="avatar-container">
         <img id="user-avatar" class="avatar" src="" alt="Avatar">
         <div id="user-initials" class="avatar initials"></div>
-        <span class="arrow">&#9662;</span>
       </div>
       <span id="welcome-text"></span>
+
+      <!-- Menú desplegable -->
       <div class="dropdown-menu">
-        <p id="user-email"></p>
-        <a href="#">Mis comentarios</a>
-        <a href="#">Mis me gusta</a>
-        <a href="#" id="logout-link">Cerrar sesión</a>
+        <div class="dropdown-header">
+          <img id="menu-avatar" src="" alt="Foto perfil grande">
+          <h4 id="menu-name">Nombre Usuario</h4>
+          <p id="menu-email">correo@gmail.com</p>
+        </div>
+        <a href="#"><span>💬</span> Mis comentarios</a>
+        <a href="#"><span>❤️</span> Mis me gusta</a>
+        <div class="dropdown-separator"></div>
+        <a href="#" id="logout-link"><span>🚪</span> Cerrar sesión</a>
       </div>
     </div>
 
+    <!-- Menú hamburguesa -->
     <button class="hamburger">&#9776;</button>
   </div>
-
 
       <!-- Menú principal -->
       <nav class="main-nav">
