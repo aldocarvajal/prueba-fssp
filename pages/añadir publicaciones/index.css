@@ -1,0 +1,499 @@
+/* =========================================================
+   RESET GENERAL
+   (Normaliza márgenes y evita errores visuales)
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   FONDO GENERAL DE LA PÁGINA
+   (Fondo oscuro moderno tipo dashboard premium)
+========================================================= */
+
+body {
+  font-family: 'Inter', sans-serif;
+
+  background:
+    radial-gradient(circle at top left, rgba(99,102,241,0.12), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(37,99,235,0.10), transparent 40%),
+    #0b1220;
+
+  color: #e5e7eb;
+}
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   (Divide editor izquierda y preview derecha)
+========================================================= */
+
+.dashboard-container {
+  display: flex;
+  gap: 32px;
+  padding: 40px;
+  min-height: 100vh;
+}
+
+/* =========================================================
+   PANEL IZQUIERDO (EDITOR)
+========================================================= */
+
+.editor-section {
+  flex: 2;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+
+  padding: 28px;
+  border-radius: 22px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+
+  transition: 0.3s ease;
+}
+
+.editor-section:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================================================
+   INPUT: TÍTULO
+   (Tipo editor moderno grande)
+========================================================= */
+
+.title-input {
+  width: 100%;
+  font-size: 40px;
+  font-weight: 800;
+
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: #ffffff;
+
+  margin-bottom: 20px;
+
+  resize: none;
+}
+
+.title-input::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+
+/* =========================================================
+   INPUT: DESCRIPCIÓN
+========================================================= */
+
+.description-input {
+  width: 100%;
+  min-height: 220px;
+
+  padding: 16px;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+
+  color: #e5e7eb;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.25s ease;
+}
+
+.description-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.2);
+}
+
+/* contador de caracteres */
+.char-counter {
+  text-align: right;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 6px;
+}
+
+/* =========================================================
+   INPUTS GENERALES (categoría, fecha, autor)
+========================================================= */
+
+.category-select {
+  width: 100%;
+
+  margin-top: 12px;
+  padding: 12px 14px;
+
+  border-radius: 14px;
+
+  background: rgba(15,23,42,0.6);
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  color: #ffffff;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+
+  appearance: none; /* 🔥 elimina estilo nativo */
+}
+
+/* opciones dentro del select */
+.category-select option {
+  background: #0b1220;
+  color: #ffffff;
+}
+
+/* hover/focus */
+.category-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.25);
+}
+/* =========================================================
+   ZONA DRAG & DROP IMÁGENES
+========================================================= */
+
+.image-upload {
+  margin-top: 18px;
+
+  padding: 40px;
+
+  border-radius: 22px;
+
+  border: 2px dashed rgba(255,255,255,0.2);
+
+  background: rgba(255,255,255,0.03);
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.image-upload:hover {
+  border-color: #6366f1;
+  background: rgba(99,102,241,0.08);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   GALERÍA DE MINIATURAS
+========================================================= */
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+/* miniatura */
+.thumbnail {
+  position: relative;
+
+  height: 110px;
+
+  border-radius: 16px;
+  overflow: hidden;
+
+  background: rgba(255,255,255,0.05);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+
+  transition: 0.25s ease;
+}
+
+.thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* overlay eliminar */
+.delete-label {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(15,23,42,0.75);
+  backdrop-filter: blur(6px);
+
+  color: white;
+
+  opacity: 0;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.thumbnail:hover .delete-label {
+  opacity: 1;
+}
+
+/* =========================================================
+   SIDEBAR DERECHA
+========================================================= */
+
+.sidebar {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 40px; /* 🔥 antes 24px, ahora más aire real */
+
+  padding-top: 10px;
+}
+
+/* =========================================================
+   CARD DE PREVIEW Y CONFIGURACIÓN
+========================================================= */
+
+.preview-card,
+.settings-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 22px;
+
+  padding: 18px;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+
+  transition: 0.3s ease;
+
+  margin-top: 16px;
+}
+
+.preview-card:hover,
+.settings-card:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================================================
+   HEADER PREVIEW (LOGO + NOMBRE)
+========================================================= */
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.preview-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.preview-name {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* =========================================================
+   TEXTO PREVIEW
+========================================================= */
+
+#preview-title {
+  font-size: 18px;
+  font-weight: 700;
+
+  margin-bottom: 8px;
+
+  color: #fff;
+}
+
+#preview-description {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+}
+
+/* =========================================================
+   CARRUSEL (CORREGIDO + CENTRADO PERFECTO)
+   🔥 ESTA ES LA PARTE ARREGLADA
+========================================================= */
+
+.preview-carousel {
+  margin-top: 14px;
+
+  border-radius: 18px;
+  overflow: hidden;
+
+  width: 100%;
+  aspect-ratio: 1 / 1;
+
+  position: relative;
+}
+
+/* track del carrusel */
+.preview-carousel-track {
+  display: flex;
+  height: 100%;
+
+  transition: transform 0.4s ease;
+}
+
+/* item del carrusel */
+.preview-carousel-item {
+  flex: 0 0 100%;
+
+  height: 100%;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+/* 🔥 fondo borroso correcto */
+.preview-carousel-item::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+
+  filter: blur(25px);
+  transform: scale(1.3);
+
+  z-index: 0;
+}
+
+/* 🔥 imagen principal centrada PERFECTAMENTE */
+.preview-carousel-item img {
+  position: relative;
+  z-index: 1;
+
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+
+  margin: auto;
+  display: block;
+}
+
+/* botones carrusel */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+
+  border: none;
+
+  padding: 8px 10px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  z-index: 2;
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+/* =========================================================
+   BOTONES ACCIÓN
+========================================================= */
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-primary {
+  flex: 1;
+
+  padding: 12px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #6366f1, #2563eb);
+
+  color: #fff;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+
+  box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(99,102,241,0.4);
+}
+
+.btn-secondary {
+  flex: 1;
+
+  padding: 12px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+
+  color: #fff;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+}

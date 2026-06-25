@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Añadir Publicación</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sección izquierda -->
+    <section class="editor-section">
+      <!-- Título -->
+<textarea id="post-title" class="title-input" placeholder="Escribe un título atractivo..."></textarea>
+
+
+      <!-- Descripción -->
+      <textarea id="post-description" class="description-input" placeholder="Escribe aquí el contenido de tu publicación..."></textarea>
+      <div class="char-counter">0 / 5000 caracteres</div>
+
+      <!-- Categoría -->
+      <select id="post-category" class="category-select">
+        <option value="">Selecciona categoría</option>
+        <option value="Noticias">Noticias</option>
+        <option value="Eventos">Eventos</option>
+        <option value="Historias">Historias</option>
+      </select>
+
+      <!-- Área drag & drop -->
+      <div class="image-upload" id="image-upload">
+        <p>Arrastra tus imágenes aquí o haz clic para seleccionar</p>
+        <input type="file" id="post-images" multiple accept="image/*">
+      </div>
+
+      <!-- Galería -->
+      <div class="image-gallery" id="image-gallery"></div>
+    </section>
+
+    <!-- Sección derecha -->
+    <aside class="sidebar">
+      <!-- Vista previa -->
+<div class="preview-card">
+  <!-- Encabezado tipo perfil -->
+  <div class="preview-header">
+    <img src="../../assets/images/logoencabezado.png" alt="Logo Fundación" class="preview-logo">
+    <span class="preview-name">Fundación Sí Se Puede</span>
+  </div>
+
+  <!-- Título y descripción -->
+  <h3 id="preview-title">Título de la publicación</h3>
+  <p id="preview-description">Aquí aparecerá un resumen de tu publicación...</p>
+
+  <!-- Carrusel de imágenes -->
+<div class="preview-carousel">
+  <div class="preview-carousel-track" id="preview-carousel-track">
+    <!-- Aquí se insertarán las imágenes -->
+  </div>
+  <button class="carousel-btn prev" id="carousel-prev">‹</button>
+  <button class="carousel-btn next" id="carousel-next">›</button>
+</div>
+
+
+      <!-- Configuración -->
+<div class="settings-card">
+  <label>Fecha de publicación:</label>
+  <input type="date" id="post-date">
+
+  <br> <!-- 🔹 Forzamos salto de línea -->
+
+  <label>Autor:</label>
+  <input type="text" id="post-author" placeholder="Nombre del autor">
+
+  <!-- Botones -->
+  <div class="buttons">
+    <button class="btn-secondary" id="btn-draft">Guardar borrador</button>
+    <button class="btn-primary" id="btn-publish">Publicar</button>
+  </div>
+</div>
+
+
+    </aside>
+  </div>
+
+  <!-- Conexión al JS externo -->
+  <script type="module" src="index.js"></script>
+</body>
+</html>
