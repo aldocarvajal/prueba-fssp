@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Portada</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- Botón de navegación -->
+    <div class="nav-bar">
+      <button class="btn-secondary" onclick="window.location.href='../../index.html'">
+        ← Volver al inicio
+      </button>
+    </div>
+
+    <!-- Área de portadas seleccionadas -->
+    <section class="portadas-section">
+      <h2>Portadas seleccionadas</h2>
+      <div id="portadas-container" class="portadas-grid">
+        <!-- Se llenan dinámicamente con JS -->
+      </div>
+    </section>
+
+    <!-- Área de publicaciones disponibles -->
+    <section class="publicaciones-section">
+      <h2>Publicaciones disponibles</h2>
+      <div id="publicaciones-container" class="publicaciones-grid">
+        <!-- Se llenan dinámicamente con JS -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Modal Editor de Portada -->
+  <div id="editor-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditor()">&times;</span>
+      <div class="editor-frame">
+        <!-- Flechas de navegación -->
+        <button class="arrow left" onclick="prevImage()">&#10094;</button>
+        <div class="image-container">
+          <!-- Imagen dinámica -->
+          <img id="editor-image" src="" alt="Imagen portada">
+            <div class="crop-overlay"></div>
+        </div>
+        <button class="arrow right" onclick="nextImage()">&#10095;</button>
+      </div>
+      <button class="btn-primary" onclick="saveCrop()">Guardar selección</button>
+    </div>
+  </div>
+
+  <!-- Script principal -->
+  <script type="module" src="index.js"></script>
+</body>
+</html>

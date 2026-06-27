@@ -175,18 +175,20 @@ async function savePublication(tableName) {
   }
 
   /* -------- INSERTAR EN TABLA -------- */
-  const { error: insertError } = await supabase
-    .from(tableName)
-    .insert([
-      {
-        titulo: title,
-        descripcion: description,
-        categoria: category,
-        imagenes: imageUrls,
-        fecha: date,
-        autor: author
-      }
-    ]);
+const imageString = imageUrls.join(";"); // 🔹 aquí defines imageString
+
+const { error: insertError } = await supabase
+  .from(tableName)
+  .insert([
+    {
+      titulo: title,
+      descripcion: description,
+      categoria: category,
+      imagenes_text: imageString, // ✅ ahora sí existe
+      fecha: date,
+      autor: author
+    }
+  ]);
 
   /* =========================================================
      8. RESPUESTA + LIMPIEZA DEL FORMULARIO
