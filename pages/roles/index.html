@@ -42,27 +42,16 @@
       <p id="admin-empty" class="empty-state hidden">Aún no hay administradores registrados.</p>
     </section>
 
-    <div class="actions-grid">
-      <section class="card-section">
-        <h2>Convertir usuario en administrador</h2>
-        <p class="hint">El usuario debe haberse registrado previamente en el sistema.</p>
-        <div class="form-row">
-          <input type="email" id="email-input" placeholder="correo@ejemplo.com">
-          <button id="make-admin" class="btn-primary">Hacer administrador</button>
-        </div>
-        <p id="make-admin-msg" class="feedback hidden"></p>
-      </section>
-
-      <section class="card-section">
-        <h2>Quitar rol de administrador</h2>
-        <p class="hint">El usuario pasará a tener rol de usuario normal.</p>
-        <div class="form-row">
-          <input type="email" id="remove-email" placeholder="correo@ejemplo.com">
-          <button id="remove-admin" class="btn-danger">Quitar administrador</button>
-        </div>
-        <p id="remove-admin-msg" class="feedback hidden"></p>
-      </section>
-    </div>
+    <section class="card-section">
+      <h2 id="form-title">Convertir usuario en administrador</h2>
+      <p class="hint" id="form-hint">El usuario debe haberse registrado previamente en el sistema, con correo Gmail.</p>
+      <div class="form-row">
+        <input type="email" id="email-input" placeholder="correo@gmail.com">
+        <button id="make-admin" class="btn-primary">Hacer administrador</button>
+        <button id="cancelar-edicion" class="btn-secondary hidden">Cancelar</button>
+      </div>
+      <p id="make-admin-msg" class="feedback hidden"></p>
+    </section>
 
   </div>
 

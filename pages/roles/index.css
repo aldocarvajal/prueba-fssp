@@ -253,3 +253,38 @@ input:focus {
   background: linear-gradient(135deg, #e02424, #f04444);
   transform: translateY(-2px);
 }
+
+.admin-list li {
+  gap: 10px;
+}
+
+.admin-list .admin-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-edit {
+  background: rgba(0,51,204,0.1);
+  color: #001f8c;
+}
+.btn-edit:hover {
+  background: rgba(0,51,204,0.2);
+}
+
+.btn-remove {
+  background: rgba(224,36,36,0.1);
+  color: #b91c1c;
+}
+.btn-remove:hover {
+  background: rgba(224,36,36,0.2);
+}
