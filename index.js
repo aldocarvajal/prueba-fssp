@@ -57,6 +57,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const welcome = document.getElementById("welcome-text");
     const email = document.getElementById("user-email");
 
+async function actualizarVisibilidadRoles(session) {
+  const itemRoles = document.getElementById("menu-roles-item");
+  if (!itemRoles) return;
+
+  if (!session) {
+    itemRoles.style.display = "none";
+    return;
+  }
+
+  const { data: rol, error } = await supabase.rpc("get_my_role");
+
+  if (error || rol !== "admin") {
+    itemRoles.style.display = "none";
+  } else {
+    itemRoles.style.display = "block";
+  }
+}
+
 if (session) {
   loginBtn.style.display = "none";
   profile.style.display = "flex";

@@ -29,27 +29,18 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
 }
-/* 🔹 Publicaciones (abajo) */
+/* Publicaciones disponibles (abajo) */
 .publicaciones-grid .card img {
   width: 100%;
   height: 140px;
   object-fit: cover;
 }
 
+/* Portadas seleccionadas (arriba) */
 .portadas-grid .card .image-wrapper {
   position: relative;
   height: 140px;   /* ✅ altura fija */
   overflow: hidden;
-}
-
-.portadas-grid .card img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: auto;
-  height: auto;
-  object-fit: contain;
 }
 
 .card {
@@ -230,4 +221,19 @@ h2 {
 
 #editor-image.dragging {
   cursor: grabbing;
+}
+
+.portadas-grid .card {
+  cursor: grab;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.portadas-grid .card.dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+.portadas-grid .card.drag-over {
+  outline: 3px dashed #0033cc;
+  outline-offset: -3px;
 }

@@ -6,24 +6,65 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <h1>Administrar Roles</h1>
 
-  <section>
-    <h2>Lista de Administradores</h2>
-    <ul id="admin-list"></ul>
-  </section>
+  <!-- Pantalla de acceso denegado -->
+  <div id="denied-screen" class="denied-screen hidden">
+    <div class="denied-card">
+      <div class="denied-icon">🔒</div>
+      <h1>Acceso restringido</h1>
+      <p id="denied-message">Esta sección solo está disponible para administradores.</p>
+      <button id="volver-inicio-btn" class="btn-secondary">Volver al inicio</button>
+    </div>
+  </div>
 
-  <section>
-    <h2>Convertir usuario en administrador</h2>
-    <input type="email" id="email-input" placeholder="Correo del usuario">
-    <button id="make-admin">Hacer Administrador</button>
-  </section>
+  <!-- Panel principal (solo visible para admins) -->
+  <div id="admin-panel" class="dashboard-container hidden">
 
-  <section>
-    <h2>Eliminar administrador</h2>
-    <input type="email" id="remove-email" placeholder="Correo del administrador">
-    <button id="remove-admin">Eliminar Administrador</button>
-  </section>
+    <header class="topbar">
+      <div>
+        <h1>Administrar Roles</h1>
+        <p class="subtitle">Gestiona qué usuarios tienen permisos de administrador</p>
+      </div>
+      <div class="topbar-user">
+        <span id="current-user-email" class="user-badge"></span>
+        <button id="volver-inicio-btn-2" class="btn-secondary">Volver al inicio</button>
+      </div>
+    </header>
+
+    <section class="card-section">
+      <div class="card-section-header">
+        <h2>Administradores actuales</h2>
+        <span id="admin-count" class="badge">0</span>
+      </div>
+      <ul id="admin-list" class="admin-list">
+        <!-- Se llena dinámicamente -->
+      </ul>
+      <p id="admin-empty" class="empty-state hidden">Aún no hay administradores registrados.</p>
+    </section>
+
+    <div class="actions-grid">
+      <section class="card-section">
+        <h2>Convertir usuario en administrador</h2>
+        <p class="hint">El usuario debe haberse registrado previamente en el sistema.</p>
+        <div class="form-row">
+          <input type="email" id="email-input" placeholder="correo@ejemplo.com">
+          <button id="make-admin" class="btn-primary">Hacer administrador</button>
+        </div>
+        <p id="make-admin-msg" class="feedback hidden"></p>
+      </section>
+
+      <section class="card-section">
+        <h2>Quitar rol de administrador</h2>
+        <p class="hint">El usuario pasará a tener rol de usuario normal.</p>
+        <div class="form-row">
+          <input type="email" id="remove-email" placeholder="correo@ejemplo.com">
+          <button id="remove-admin" class="btn-danger">Quitar administrador</button>
+        </div>
+        <p id="remove-admin-msg" class="feedback hidden"></p>
+      </section>
+    </div>
+
+  </div>
 
   <script type="module" src="index.js"></script>
 </body>
