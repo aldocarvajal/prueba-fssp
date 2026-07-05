@@ -57,54 +57,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const welcome = document.getElementById("welcome-text");
     const email = document.getElementById("user-email");
 
-async function actualizarVisibilidadRoles(session) {
-  const itemRoles = document.getElementById("menu-roles-item");
-  if (!itemRoles) return;
+    if (session) {
+      loginBtn.style.display = "none";
+      profile.style.display = "flex";
 
-  if (!session) {
-    itemRoles.style.display = "none";
-    return;
+      const user = session.user;
+      const fullName = user.user_metadata.full_name || user.email;
+      const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
+
+      if (photo) {
+        avatar.src = photo;
+        avatar.style.display = "block";
+        initials.style.display = "none";
+      } else {
+        avatar.style.display = "none";
+        const parts = fullName.split(" ");
+        const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+        initials.textContent = letters.toUpperCase();
+        initials.style.display = "flex";
+      }
+
+      welcome.textContent = `Bienvenido ${fullName}`;
+      email.textContent = user.email;
+    } else {
+      loginBtn.style.display = "block";
+      profile.style.display = "none";
+    }
   }
 
-  const { data: rol, error } = await supabase.rpc("get_my_role");
+  // Función para mostrar/ocultar el link de "Administrar Roles" (aún no la usamos activamente)
+  async function actualizarVisibilidadRoles(session) {
+    const itemRoles = document.getElementById("menu-roles-item");
+    if (!itemRoles) return;
 
-  if (error || rol !== "admin") {
-    itemRoles.style.display = "none";
-  } else {
-    itemRoles.style.display = "block";
-  }
-}
+    if (!session) {
+      itemRoles.style.display = "none";
+      return;
+    }
 
-if (session) {
-  loginBtn.style.display = "none";
-  profile.style.display = "flex";
+    const { data: rol, error } = await supabase.rpc("get_my_role");
 
-  const user = session.user;
-  const fullName = user.user_metadata.full_name || user.email;
-  const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
-
-  if (photo) {
-    avatar.src = photo;
-    avatar.style.display = "block";
-    initials.style.display = "none";
-  } else {
-    avatar.style.display = "none";
-    const parts = fullName.split(" ");
-    const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
-    initials.textContent = letters.toUpperCase();
-    initials.style.display = "flex";
-  }
-
-  // Texto de bienvenida en el header
-  welcome.textContent = `Bienvenido ${fullName}`;
-
-  // Solo correo en el menú desplegable
-  email.textContent = user.email;
-} else {
-  loginBtn.style.display = "block";
-  profile.style.display = "none";
-}
-
+    if (error || rol !== "admin") {
+      itemRoles.style.display = "none";
+    } else {
+      itemRoles.style.display = "block";
+    }
   }
 
   // Botón login
@@ -125,6 +122,7 @@ if (session) {
   supabase.auth.onAuthStateChange((event, session) => {
     console.log("Evento de auth:", event, session);
     updateUI(session);
+    actualizarVisibilidadRoles(session);
   });
 
   // Revisar sesión al cargar
@@ -134,10 +132,12 @@ if (session) {
       const { data, error } = await supabase.auth.getSession();
       if (error) console.error("Error al obtener sesión:", error.message);
       updateUI(data.session);
+      actualizarVisibilidadRoles(data.session);
       window.history.replaceState({}, document.title, window.location.pathname);
     } else {
       const { data: { session } } = await supabase.auth.getSession();
       updateUI(session);
+      actualizarVisibilidadRoles(session);
     }
   })();
 
@@ -146,7 +146,7 @@ if (session) {
   const dropdownMenu = document.querySelector(".dropdown-menu");
 
   avatarContainer.addEventListener("click", (e) => {
-    e.stopPropagation(); // evita cierre inmediato
+    e.stopPropagation();
     dropdownMenu.classList.toggle("show");
   });
 
