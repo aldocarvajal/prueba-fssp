@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const deniedScreen = document.getElementById("denied-screen");
 const adminPanel = document.getElementById("admin-panel");
 
-let editandoId = null; // si no es null, estamos editando el correo de este admin
+let editandoEmailOriginal = null; // correo original cuando estamos editando
 
 function mostrarPantalla(pantalla) {
   deniedScreen.classList.add("hidden");
@@ -82,20 +82,20 @@ async function loadAdmins() {
 
   data.forEach(admin => {
     const li = document.createElement("li");
+    const pendienteTag = admin.registrado ? "" : `<span class="pending-tag">Pendiente de iniciar sesión</span>`;
     li.innerHTML = `
-      <span class="admin-email">${admin.email}</span>
+      <span class="admin-email">${admin.email} ${pendienteTag}</span>
       <div class="admin-actions">
-        <button class="btn-small btn-edit" data-id="${admin.id}" data-email="${admin.email}">Editar</button>
-        <button class="btn-small btn-remove" data-id="${admin.id}">Quitar</button>
+        <button class="btn-small btn-edit" data-email="${admin.email}">Editar</button>
+        <button class="btn-small btn-remove" data-email="${admin.email}">Quitar</button>
       </div>
     `;
     list.appendChild(li);
   });
 
-  // Botones "Editar"
   list.querySelectorAll(".btn-edit").forEach(btn => {
     btn.addEventListener("click", () => {
-      editandoId = btn.dataset.id;
+      editandoEmailOriginal = btn.dataset.email;
       document.getElementById("email-input").value = btn.dataset.email;
       document.getElementById("form-title").textContent = "Editar correo del administrador";
       document.getElementById("form-hint").textContent = "Corrige el correo y guarda los cambios.";
@@ -105,17 +105,16 @@ async function loadAdmins() {
     });
   });
 
-  // Botones "Quitar"
   list.querySelectorAll(".btn-remove").forEach(btn => {
-    btn.addEventListener("click", () => quitarAdmin(btn.dataset.id, data.length));
+    btn.addEventListener("click", () => quitarAdmin(btn.dataset.email));
   });
 }
 
 function resetearFormulario() {
-  editandoId = null;
+  editandoEmailOriginal = null;
   document.getElementById("email-input").value = "";
   document.getElementById("form-title").textContent = "Convertir usuario en administrador";
-  document.getElementById("form-hint").textContent = "El usuario debe haberse registrado previamente en el sistema, con correo Gmail.";
+  document.getElementById("form-hint").textContent = "El correo debe ser una dirección Gmail. No es necesario que el usuario ya haya iniciado sesión antes.";
   document.getElementById("make-admin").textContent = "Hacer administrador";
   document.getElementById("cancelar-edicion").classList.add("hidden");
 }
@@ -134,16 +133,19 @@ document.getElementById("make-admin").addEventListener("click", async () => {
     return;
   }
 
-  if (editandoId) {
-    // Modo edición: solo corregir el correo en auth.users vía función RPC
-    const { error } = await supabase.rpc("actualizar_email_usuario", {
-      user_id: editandoId,
-      nuevo_email: email
-    });
+  if (editandoEmailOriginal) {
+    // Quitar el correo viejo de la lista de autorizados y agregar el nuevo
+    const { error: errorQuitar } = await supabase.rpc("quitar_admin_por_email", { user_email: editandoEmailOriginal });
+    if (errorQuitar) {
+      console.error(errorQuitar);
+      mostrarFeedback("make-admin-msg", "No se pudo editar: " + errorQuitar.message, "error");
+      return;
+    }
 
-    if (error) {
-      console.error(error);
-      mostrarFeedback("make-admin-msg", "Error al actualizar el correo.", "error");
+    const { error: errorAgregar } = await supabase.rpc("hacer_admin_por_email", { user_email: email });
+    if (errorAgregar) {
+      console.error(errorAgregar);
+      mostrarFeedback("make-admin-msg", "Error al guardar el nuevo correo.", "error");
       return;
     }
 
@@ -153,21 +155,12 @@ document.getElementById("make-admin").addEventListener("click", async () => {
     return;
   }
 
-  // Modo creación: convertir usuario existente en admin
-  const { data: userId, error: userError } = await supabase.rpc("get_user_id_by_email", { user_email: email });
-
-  if (userError || !userId) {
-    mostrarFeedback("make-admin-msg", "No se encontró ningún usuario registrado con ese correo.", "error");
-    return;
-  }
-
-  const { error } = await supabase
-    .from("profiles")
-    .upsert({ id: userId, role: "admin" });
+  // Modo creación
+  const { error } = await supabase.rpc("hacer_admin_por_email", { user_email: email });
 
   if (error) {
     console.error(error);
-    mostrarFeedback("make-admin-msg", "Error al actualizar el rol.", "error");
+    mostrarFeedback("make-admin-msg", "Error al asignar el rol de administrador.", "error");
   } else {
     mostrarFeedback("make-admin-msg", `${email} ahora es administrador.`, "success");
     resetearFormulario();
@@ -175,23 +168,17 @@ document.getElementById("make-admin").addEventListener("click", async () => {
   }
 });
 
-// ---------- Quitar admin (con restricción de "al menos 1") ----------
-async function quitarAdmin(userId, totalAdmins) {
-  if (totalAdmins <= 1) {
-    alert("No se puede quitar: debe existir al menos un administrador en el sistema.");
-    return;
-  }
+// ---------- Quitar admin ----------
+async function quitarAdmin(email) {
+  if (!confirm("¿Seguro que deseas quitar el rol de administrador a este correo?")) return;
 
-  if (!confirm("¿Seguro que deseas quitar el rol de administrador a este usuario?")) return;
-
-  const { error } = await supabase
-    .from("profiles")
-    .update({ role: "user" })
-    .eq("id", userId);
+  const { error } = await supabase.rpc("quitar_admin_por_email", { user_email: email });
 
   if (error) {
+    alert(error.message.includes("al menos un administrador")
+      ? "No se puede quitar: debe existir al menos un administrador en el sistema."
+      : "Error al quitar el rol de administrador.");
     console.error(error);
-    alert("Error al quitar el rol de administrador.");
   } else {
     loadAdmins();
   }

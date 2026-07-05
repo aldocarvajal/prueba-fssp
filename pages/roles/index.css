@@ -288,3 +288,13 @@ input:focus {
 .btn-remove:hover {
   background: rgba(224,36,36,0.2);
 }
+.pending-tag {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a15c00;
+  background: #fff4dd;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
