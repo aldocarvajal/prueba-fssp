@@ -210,6 +210,8 @@
 /* Contenedor circular del avatar */
 .avatar-container {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: 36px;
   height: 36px;
@@ -218,13 +220,12 @@
   flex-shrink: 0;
   border: 2px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.15);
-  isolation: isolate;
 }
  
 /* Imagen dentro del avatar */
 .avatar {
-  width: 100% !important;
-  height: 100% !important;
+  width: 36px !important;
+  height: 36px !important;
   border-radius: 50%;
   object-fit: cover !important;
   object-position: 50% 50%;
