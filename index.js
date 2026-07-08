@@ -73,34 +73,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 👇 PEGA AQUÍ LA FUNCIÓN NUEVA
   async function cargarAvatarSeguro(imgEl, url) {
-    if (!url) return false;
+  if (!url) return false;
 
-    let finalUrl = url;
-    if (url.includes("googleusercontent.com") && !url.includes("=s")) {
-      finalUrl = url + "=s200-c";
-    }
-
-    try {
-      const preload = new Image();
-      preload.referrerPolicy = "no-referrer";
-      preload.src = finalUrl;
-
-      if (preload.decode) {
-        await preload.decode();
-      } else {
-        await new Promise((res, rej) => {
-          preload.onload = res;
-          preload.onerror = rej;
-        });
-      }
-
-      imgEl.src = finalUrl;
-      imgEl.classList.add("loaded");
-      return true;
-    } catch (e) {
-      return false;
-    }
+  let finalUrl = url;
+  if (url.includes("googleusercontent.com") && !url.includes("=s")) {
+    finalUrl = url + "=s200-c";
   }
+
+  imgEl.classList.remove("loaded");
+  imgEl.src = finalUrl;
+
+  try {
+    if (imgEl.decode) {
+      await imgEl.decode();          // decodifica EL MISMO elemento que se va a mostrar
+    } else {
+      await new Promise((res, rej) => {
+        imgEl.onload = res;
+        imgEl.onerror = rej;
+      });
+    }
+    imgEl.classList.add("loaded");
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
  
   /* =========================================================
