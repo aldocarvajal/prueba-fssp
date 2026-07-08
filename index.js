@@ -1,40 +1,59 @@
 // Importar Supabase desde CDN
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
+ 
 // Inicializar Supabase
 const supabaseUrl = "https://hlgzkqnqpjlwnaiduxcc.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsZ3prcW5xcGpsd25haWR1eGNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NzMzNzIsImV4cCI6MjA5NjQ0OTM3Mn0.61YF9AP-slDa_2Ly2yuXdgT4wwtZqlH135T_9iu35Sw";
 const supabase = createClient(supabaseUrl, supabaseKey);
-
+ 
 document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.querySelector(".hamburger");
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  const hamburgerClose = document.getElementById("hamburger-close");
   const hamburgerMenu = document.querySelector(".hamburger-menu");
   const blobs = document.querySelectorAll(".blob");
   const testimonios = document.querySelectorAll(".testimonio");
   const indicators = document.querySelectorAll(".carousel-indicators span");
   let index = 0;
-
-  // Overlay
+ 
+  /* =========================================================
+     MENÚ HAMBURGUESA
+  ========================================================= */
+ 
   const overlay = document.createElement("div");
   overlay.classList.add("overlay");
   document.body.appendChild(overlay);
-
-  hamburger.addEventListener("click", () => {
-    hamburgerMenu.classList.toggle("active");
-    overlay.classList.toggle("active");
-  });
-  overlay.addEventListener("click", () => {
+ 
+  function abrirHamburguesa() {
+    hamburgerMenu.classList.add("active");
+    overlay.classList.add("active");
+  }
+ 
+  function cerrarHamburguesa() {
     hamburgerMenu.classList.remove("active");
     overlay.classList.remove("active");
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      hamburgerMenu.classList.remove("active");
-      overlay.classList.remove("active");
+  }
+ 
+  hamburgerBtn.addEventListener("click", () => {
+    if (hamburgerMenu.classList.contains("active")) {
+      cerrarHamburguesa();
+    } else {
+      abrirHamburguesa();
     }
   });
-
-  // Carrusel testimonios
+ 
+  hamburgerClose.addEventListener("click", cerrarHamburguesa);
+  overlay.addEventListener("click", cerrarHamburguesa);
+ 
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      cerrarHamburguesa();
+    }
+  });
+ 
+  /* =========================================================
+     CARRUSEL DE TESTIMONIOS
+  ========================================================= */
+ 
   function showTestimonio(i) {
     testimonios.forEach((t, idx) => {
       t.style.display = idx === i ? "block" : "none";
@@ -47,63 +66,76 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   showTestimonio(index);
   setInterval(nextTestimonio, 6000);
-
-  // Función para actualizar la UI según sesión
+ 
+  /* =========================================================
+     UI SEGÚN SESIÓN
+  ========================================================= */
+ 
   function updateUI(session) {
     const loginBtn = document.getElementById("login-google");
     const profile = document.getElementById("user-profile");
     const avatar = document.getElementById("user-avatar");
     const initials = document.getElementById("user-initials");
-    const welcome = document.getElementById("welcome-text");
+    const chipName = document.getElementById("welcome-text");
+    const dropdownAvatar = document.getElementById("dropdown-avatar");
+    const dropdownName = document.getElementById("dropdown-name");
     const email = document.getElementById("user-email");
-
+ 
     if (session) {
       loginBtn.style.display = "none";
       profile.style.display = "flex";
-
+ 
       const user = session.user;
       const fullName = user.user_metadata.full_name || user.email;
       const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
-
+ 
       if (photo) {
         avatar.src = photo;
         avatar.style.display = "block";
         initials.style.display = "none";
+ 
+        dropdownAvatar.src = photo;
+        dropdownAvatar.style.display = "block";
       } else {
         avatar.style.display = "none";
-        const parts = fullName.split(" ");
+        const parts = fullName.trim().split(" ");
         const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
         initials.textContent = letters.toUpperCase();
         initials.style.display = "flex";
+ 
+        dropdownAvatar.style.display = "none";
       }
-
-      welcome.textContent = `Bienvenido ${fullName}`;
+ 
+      // El "nombre" del chip queda corto (solo primer nombre) para no
+      // desbordar el pill; el dropdown sí muestra el nombre completo.
+      chipName.textContent = fullName.split(" ")[0];
+      dropdownName.textContent = fullName;
       email.textContent = user.email;
     } else {
       loginBtn.style.display = "block";
       profile.style.display = "none";
     }
   }
-
-  // Función para mostrar/ocultar el link de "Administrar Roles" (aún no la usamos activamente)
+ 
+  // Mostrar/ocultar el link de "Administrar Roles" según el rol del usuario
   async function actualizarVisibilidadRoles(session) {
     const itemRoles = document.getElementById("menu-roles-item");
     if (!itemRoles) return;
-
+ 
     if (!session) {
       itemRoles.style.display = "none";
       return;
     }
-
+ 
     const { data: rol, error } = await supabase.rpc("get_my_role");
-
+ 
     if (error || rol !== "admin") {
       itemRoles.style.display = "none";
     } else {
       itemRoles.style.display = "block";
     }
   }
-
+ 
   // Botón login
   document.getElementById("login-google").addEventListener("click", async () => {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -112,19 +144,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     if (error) console.error("Error en login:", error.message);
   });
-
-  // Botón logout
-  document.getElementById("logout-link").addEventListener("click", async () => {
+ 
+  // Botón logout (dentro del dropdown)
+  document.getElementById("logout-link").addEventListener("click", async (e) => {
+    e.preventDefault();
     await supabase.auth.signOut();
   });
-
+ 
   // Escuchar cambios de sesión
   supabase.auth.onAuthStateChange((event, session) => {
-    console.log("Evento de auth:", event, session);
     updateUI(session);
     actualizarVisibilidadRoles(session);
   });
-
+ 
   // Revisar sesión al cargar
   (async () => {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
@@ -140,20 +172,31 @@ document.addEventListener("DOMContentLoaded", () => {
       actualizarVisibilidadRoles(session);
     }
   })();
-
-  // Toggle menú desplegable al hacer click en avatar
-  const avatarContainer = document.querySelector(".avatar-container");
+ 
+  /* =========================================================
+     CHIP DE PERFIL — abre/cierra el dropdown
+  ========================================================= */
+ 
+  const userChipBtn = document.getElementById("user-chip-btn");
   const dropdownMenu = document.querySelector(".dropdown-menu");
-
-  avatarContainer.addEventListener("click", (e) => {
+ 
+  userChipBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    dropdownMenu.classList.toggle("show");
+    const abierto = dropdownMenu.classList.toggle("show");
+    userChipBtn.classList.toggle("open", abierto);
   });
-
-  // Cerrar menú al hacer click fuera
+ 
   document.addEventListener("click", (e) => {
-    if (!avatarContainer.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    if (!userChipBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.remove("show");
+      userChipBtn.classList.remove("open");
+    }
+  });
+ 
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      dropdownMenu.classList.remove("show");
+      userChipBtn.classList.remove("open");
     }
   });
 });

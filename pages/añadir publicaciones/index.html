@@ -33,17 +33,20 @@
       <!-- Área drag & drop -->
       <div class="image-upload" id="image-upload">
         <p>Arrastra tus imágenes aquí o haz clic para seleccionar</p>
-        <input type="file" id="post-images" multiple accept="image/*">
+<input type="file" id="post-images" multiple accept="image/*,video/*">
       </div>
 
       <!-- Galería -->
-      <div class="image-gallery" id="image-gallery"></div>
+<div class="image-gallery" id="image-gallery"></div>
+
+<!-- Botón editar tamaño (aplica a TODAS las imágenes de la publicación) -->
+<button id="btn-editar-tamano" class="btn-secondary hidden" style="margin-top:14px;">Editar tamaño</button>
     </section>
 
     <!-- Sección derecha -->
     <aside class="sidebar">
       <!-- Vista previa -->
-<div class="preview-card">
+<div class="preview-card hidden" id="preview-card">
   <!-- Encabezado tipo perfil -->
   <div class="preview-header">
     <img src="../../assets/images/logoencabezado.png" alt="Logo Fundación" class="preview-logo">
@@ -51,11 +54,11 @@
   </div>
 
   <!-- Título y descripción -->
-  <h3 id="preview-title">Título de la publicación</h3>
-  <p id="preview-description">Aquí aparecerá un resumen de tu publicación...</p>
+  <h3 id="preview-title" class="hidden"></h3>
+  <p id="preview-description" class="hidden"></p>
 
   <!-- Carrusel de imágenes -->
-<div class="preview-carousel">
+<div class="preview-carousel hidden" id="preview-carousel">
   <div class="preview-carousel-track" id="preview-carousel-track">
     <!-- Aquí se insertarán las imágenes -->
   </div>
@@ -85,7 +88,54 @@
     </aside>
   </div>
 
+<!-- Modal de recorte de imagen -->
+<div id="crop-modal" class="crop-modal hidden">
+  <div class="crop-modal-content">
+
+    <div id="crop-step-ratio" class="crop-step">
+      <h3>Elige el formato de la imagen</h3>
+      <div class="ratio-options">
+        <button class="ratio-btn" data-ratio="1">
+          <div class="ratio-preview square"></div>
+          <span>1:1 (Cuadrada)</span>
+        </button>
+        <button class="ratio-btn" data-ratio="0.8">
+          <div class="ratio-preview portrait"></div>
+          <span>4:5 (Vertical)</span>
+        </button>
+        <button class="ratio-btn" data-ratio="1.7778">
+          <div class="ratio-preview landscape"></div>
+          <span>16:9 (Horizontal)</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="crop-step-editor" class="crop-step hidden">
+      <h3>Ajusta el recorte</h3>
+      <div class="crop-editor-frame">
+        <div class="crop-image-container">
+          <img id="crop-editor-image" src="" alt="Imagen a recortar">
+          <video id="crop-editor-video" class="hidden" muted loop></video>
+          <div id="crop-editor-overlay" class="crop-editor-overlay"></div>
+        </div>
+      </div>
+      <div class="crop-modal-actions">
+        <button id="crop-cancel-btn" class="btn-secondary">Cancelar</button>
+        <button id="crop-confirm-btn" class="btn-primary">Confirmar recorte</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Overlay de estado de publicación -->
+<div id="status-overlay" class="status-overlay hidden">
+  <div class="status-box">
+    <div id="status-spinner" class="status-spinner"></div>
+    <div id="status-check" class="status-check hidden">✓</div>
+    <p id="status-text">Subiendo publicación...</p>
+  </div>
+</div>
   <!-- Conexión al JS externo -->
-  <script type="module" src="index.js"></script>
+<script type="module" src="index.js?v=2"></script>
 </body>
 </html>

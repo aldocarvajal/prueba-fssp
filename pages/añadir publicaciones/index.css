@@ -1,6 +1,11 @@
 /* =========================================================
+   TIPOGRAFÍA — Sora para títulos/acentos, Inter para cuerpo
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================================
    RESET GENERAL
-   (Normaliza márgenes y evita errores visuales)
 ========================================================= */
 
 * {
@@ -10,24 +15,53 @@
 }
 
 /* =========================================================
+   TOKENS DE DISEÑO
+   Paleta: azul y rojo institucionales de la Fundación,
+   con un dorado cálido como acento de "esperanza" puntual.
+========================================================= */
+
+:root {
+  --bg-deep: #090d1a;
+  --bg-glow-blue: rgba(29, 78, 216, 0.16);
+  --bg-glow-red: rgba(220, 38, 38, 0.12);
+
+  --panel: rgba(255, 255, 255, 0.045);
+  --panel-border: rgba(255, 255, 255, 0.09);
+
+  --blue: #2563eb;
+  --blue-bright: #4f8cff;
+  --red: #dc2626;
+  --red-bright: #ff5468;
+  --gold: #f5b942;
+
+  --text: #eef1fb;
+  --text-muted: rgba(238, 241, 251, 0.62);
+  --text-faint: rgba(238, 241, 251, 0.38);
+
+  --ribbon: linear-gradient(90deg, var(--red) 0%, var(--red-bright) 30%, var(--blue-bright) 70%, var(--blue) 100%);
+}
+
+/* =========================================================
    FONDO GENERAL DE LA PÁGINA
-   (Fondo oscuro moderno tipo dashboard premium)
 ========================================================= */
 
 body {
   font-family: 'Inter', sans-serif;
 
   background:
-    radial-gradient(circle at top left, rgba(99,102,241,0.12), transparent 40%),
-    radial-gradient(circle at bottom right, rgba(37,99,235,0.10), transparent 40%),
-    #0b1220;
+    radial-gradient(circle at 12% 8%, var(--bg-glow-red), transparent 42%),
+    radial-gradient(circle at 88% 92%, var(--bg-glow-blue), transparent 45%),
+    var(--bg-deep);
 
-  color: #e5e7eb;
+  color: var(--text);
+}
+
+h1, h2, h3, h4, .preview-name, .btn-primary, .btn-secondary, .ratio-btn span {
+  font-family: 'Sora', sans-serif;
 }
 
 /* =========================================================
    LAYOUT PRINCIPAL
-   (Divide editor izquierda y preview derecha)
 ========================================================= */
 
 .dashboard-container {
@@ -37,23 +71,67 @@ body {
   min-height: 100vh;
 }
 
+.editor-section {
+  transition: flex 0.5s ease, max-width 0.5s ease;
+}
+
+.sidebar {
+  opacity: 0;
+  transform: translateX(30px);
+  max-width: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, transform 0.5s ease, max-width 0.5s ease;
+}
+
+.dashboard-container.con-contenido .editor-section {
+  flex: 2;
+}
+
+.dashboard-container.con-contenido .sidebar {
+  opacity: 1;
+  transform: translateX(0);
+  max-width: 500px;
+  flex: 1;
+}
+
+.dashboard-container:not(.con-contenido) .editor-section {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 /* =========================================================
    PANEL IZQUIERDO (EDITOR)
+   Signature: cinta bicolor rojo→azul en el borde superior,
+   la misma que reaparece en el header de la vista previa y
+   en el botón de publicar — el hilo visual de la marca.
 ========================================================= */
 
 .editor-section {
-  flex: 2;
+  position: relative;
 
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
   backdrop-filter: blur(18px);
 
-  padding: 28px;
+  padding: 32px 28px 28px;
   border-radius: 22px;
 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
 
   transition: 0.3s ease;
+
+  overflow: hidden;
+}
+
+.editor-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--ribbon);
 }
 
 .editor-section:hover {
@@ -62,13 +140,15 @@ body {
 
 /* =========================================================
    INPUT: TÍTULO
-   (Tipo editor moderno grande)
 ========================================================= */
 
 .title-input {
   width: 100%;
-  font-size: 40px;
+  font-family: 'Sora', sans-serif;
+  font-size: 38px;
   font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
 
   background: transparent;
   border: none;
@@ -76,13 +156,13 @@ body {
 
   color: #ffffff;
 
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 
   resize: none;
 }
 
 .title-input::placeholder {
-  color: rgba(255,255,255,0.35);
+  color: var(--text-faint);
 }
 
 /* =========================================================
@@ -93,16 +173,17 @@ body {
   width: 100%;
   min-height: 220px;
 
-  padding: 16px;
+  padding: 16px 18px;
 
   border-radius: 16px;
 
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.035);
 
-  color: #e5e7eb;
+  color: var(--text);
 
   font-size: 15px;
+  line-height: 1.6;
 
   outline: none;
 
@@ -110,35 +191,37 @@ body {
 }
 
 .description-input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99,102,241,0.2);
+  border-color: var(--blue-bright);
+  box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.18);
 }
 
-/* contador de caracteres */
 .char-counter {
   text-align: right;
   font-size: 12px;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-faint);
   margin-top: 6px;
+  font-variant-numeric: tabular-nums;
 }
 
 /* =========================================================
-   INPUTS GENERALES (categoría, fecha, autor)
+   CATEGORÍA
 ========================================================= */
 
 .category-select {
   width: 100%;
 
-  margin-top: 12px;
-  padding: 12px 14px;
+  margin-top: 14px;
+  padding: 13px 16px;
 
   border-radius: 14px;
 
-  background: rgba(15,23,42,0.6);
+  background: rgba(9, 13, 26, 0.6);
 
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid var(--panel-border);
 
   color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
 
   outline: none;
 
@@ -146,34 +229,39 @@ body {
 
   transition: 0.25s ease;
 
-  appearance: none; /* 🔥 elimina estilo nativo */
+  appearance: none;
+
+  background-image: linear-gradient(45deg, transparent 50%, var(--blue-bright) 50%),
+                     linear-gradient(135deg, var(--blue-bright) 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
 }
 
-/* opciones dentro del select */
 .category-select option {
   background: #0b1220;
   color: #ffffff;
 }
 
-/* hover/focus */
 .category-select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99,102,241,0.25);
+  border-color: var(--blue-bright);
+  box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.2);
 }
+
 /* =========================================================
-   ZONA DRAG & DROP IMÁGENES
+   ZONA DRAG & DROP
 ========================================================= */
 
 .image-upload {
-  margin-top: 18px;
+  margin-top: 20px;
 
-  padding: 40px;
+  padding: 38px 30px;
 
-  border-radius: 22px;
+  border-radius: 20px;
 
-  border: 2px dashed rgba(255,255,255,0.2);
+  border: 2px dashed var(--panel-border);
 
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.025);
 
   text-align: center;
 
@@ -182,9 +270,24 @@ body {
   transition: 0.3s ease;
 }
 
+.image-upload p {
+  color: var(--text-muted);
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.image-upload::before {
+  content: "＋";
+  display: block;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--blue-bright);
+  margin-bottom: 10px;
+}
+
 .image-upload:hover {
-  border-color: #6366f1;
-  background: rgba(99,102,241,0.08);
+  border-color: var(--blue-bright);
+  background: rgba(79, 140, 255, 0.07);
   transform: translateY(-2px);
 }
 
@@ -200,25 +303,26 @@ body {
   margin-top: 20px;
 }
 
-/* miniatura */
 .thumbnail {
   position: relative;
 
   height: 110px;
 
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
 
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--panel-border);
 
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
   transition: 0.25s ease;
 }
 
 .thumbnail:hover {
   transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  border-color: var(--blue-bright);
 }
 
 .thumbnail img {
@@ -227,7 +331,6 @@ body {
   object-fit: cover;
 }
 
-/* overlay eliminar */
 .delete-label {
   position: absolute;
   inset: 0;
@@ -236,7 +339,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  background: rgba(15,23,42,0.75);
+  background: rgba(9, 13, 26, 0.8);
   backdrop-filter: blur(6px);
 
   color: white;
@@ -262,7 +365,7 @@ body {
   display: flex;
   flex-direction: column;
 
-  gap: 40px; /* 🔥 antes 24px, ahora más aire real */
+  gap: 40px;
 
   padding-top: 10px;
 }
@@ -273,20 +376,35 @@ body {
 
 .preview-card,
 .settings-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
 
   border-radius: 22px;
 
-  padding: 18px;
+  padding: 20px;
 
   backdrop-filter: blur(18px);
 
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 
   transition: 0.3s ease;
 
   margin-top: 16px;
+
+  overflow: hidden;
+}
+
+.preview-card::before,
+.settings-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--ribbon);
 }
 
 .preview-card:hover,
@@ -301,9 +419,9 @@ body {
 .preview-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
 
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .preview-logo {
@@ -311,11 +429,14 @@ body {
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid var(--panel-border);
 }
 
 .preview-name {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14.5px;
   color: #fff;
+  letter-spacing: 0.01em;
 }
 
 /* =========================================================
@@ -323,8 +444,10 @@ body {
 ========================================================= */
 
 #preview-title {
-  font-size: 18px;
+  font-family: 'Sora', sans-serif;
+  font-size: 19px;
   font-weight: 700;
+  line-height: 1.3;
 
   margin-bottom: 8px;
 
@@ -333,12 +456,14 @@ body {
 
 #preview-description {
   font-size: 14px;
-  color: rgba(255,255,255,0.65);
+  line-height: 1.55;
+  color: var(--text-muted);
 }
 
 /* =========================================================
-   CARRUSEL (CORREGIDO + CENTRADO PERFECTO)
-   🔥 ESTA ES LA PARTE ARREGLADA
+   CARRUSEL DE VISTA PREVIA
+   ⚠️ Propiedades estructurales (aspect-ratio, flex, position,
+   overflow) sin tocar: el JS mide y calcula sobre ellas.
 ========================================================= */
 
 .preview-carousel {
@@ -351,9 +476,10 @@ body {
   aspect-ratio: 1 / 1;
 
   position: relative;
+
+  border: 1px solid var(--panel-border);
 }
 
-/* track del carrusel */
 .preview-carousel-track {
   display: flex;
   height: 100%;
@@ -361,7 +487,6 @@ body {
   transition: transform 0.4s ease;
 }
 
-/* item del carrusel */
 .preview-carousel-item {
   flex: 0 0 100%;
 
@@ -376,7 +501,6 @@ body {
   overflow: hidden;
 }
 
-/* 🔥 fondo borroso correcto */
 .preview-carousel-item::before {
   content: "";
 
@@ -387,13 +511,12 @@ body {
   background-size: cover;
   background-position: center;
 
-  filter: blur(25px);
+  filter: blur(25px) saturate(1.2);
   transform: scale(1.3);
 
   z-index: 0;
 }
 
-/* 🔥 imagen principal centrada PERFECTAMENTE */
 .preview-carousel-item img {
   position: relative;
   z-index: 1;
@@ -407,24 +530,29 @@ body {
   display: block;
 }
 
-/* botones carrusel */
 .carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 
-  background: rgba(0,0,0,0.5);
+  background: rgba(9, 13, 26, 0.65);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 
-  border: none;
-
-  padding: 8px 10px;
+  padding: 9px 12px;
 
   border-radius: 10px;
 
   cursor: pointer;
 
   z-index: 2;
+
+  transition: 0.2s ease;
+}
+
+.carousel-btn:hover {
+  background: var(--blue);
+  border-color: var(--blue-bright);
 }
 
 .carousel-btn.prev { left: 10px; }
@@ -437,46 +565,50 @@ body {
 .buttons {
   display: flex;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 .btn-primary {
   flex: 1;
 
-  padding: 12px;
+  padding: 13px;
 
   border: none;
   border-radius: 14px;
 
-  background: linear-gradient(135deg, #6366f1, #2563eb);
+  background: linear-gradient(120deg, var(--red) 0%, var(--red-bright) 45%, var(--blue-bright) 100%);
 
   color: #fff;
 
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.01em;
 
   cursor: pointer;
 
   transition: 0.3s ease;
 
-  box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+  box-shadow: 0 12px 30px rgba(220, 38, 38, 0.25);
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 20px 50px rgba(99,102,241,0.4);
+  box-shadow: 0 18px 44px rgba(79, 140, 255, 0.32);
 }
 
 .btn-secondary {
   flex: 1;
 
-  padding: 12px;
+  padding: 13px;
 
   border-radius: 14px;
 
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
 
-  color: #fff;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
 
   cursor: pointer;
 
@@ -484,7 +616,8 @@ body {
 }
 
 .btn-secondary:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--blue-bright);
   transform: translateY(-2px);
 }
 
@@ -497,8 +630,9 @@ body {
     flex-direction: column;
   }
 }
+
 /* =========================================================
-   CONTENEDOR SUPERIOR CENTRADO
+   BARRA SUPERIOR
 ========================================================= */
 
 .top-bar {
@@ -509,26 +643,24 @@ body {
   padding-bottom: 10px;
 }
 
-/* =========================================================
-   BOTÓN VOLVER
-========================================================= */
-
 .back-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
 
-  padding: 14px 24px;
+  padding: 13px 22px;
 
-  border-radius: 16px;
+  border-radius: 14px;
 
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
 
   color: #ffffff;
   text-decoration: none;
+  font-family: 'Sora', sans-serif;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
 
   backdrop-filter: blur(12px);
 
@@ -538,9 +670,365 @@ body {
 .back-btn:hover {
   transform: translateY(-2px);
 
-  background: rgba(99,102,241,0.15);
+  background: rgba(220, 38, 38, 0.1);
+  border-color: var(--red-bright);
 
-  border-color: rgba(99,102,241,0.4);
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2);
+}
 
-  box-shadow: 0 10px 30px rgba(99,102,241,0.25);
+/* =========================================================
+   MODAL DE RECORTE
+   ⚠️ Todo lo estructural (aspect-ratio, position: absolute,
+   translate centering) se conserva intacto: el editor de
+   recorte depende de estas medidas exactas.
+========================================================= */
+
+.crop-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 16, 0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.crop-modal.hidden { display: none; }
+
+.crop-modal-content {
+  background: #0c1120;
+  border: 1px solid var(--panel-border);
+  border-radius: 22px;
+  padding: 30px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+}
+
+.crop-modal-content h3 {
+  font-family: 'Sora', sans-serif;
+  margin-bottom: 22px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.crop-step.hidden { display: none; }
+
+.ratio-options {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+
+.ratio-btn {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 18px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: 0.25s ease;
+}
+
+.ratio-btn span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ratio-btn:hover {
+  border-color: var(--blue-bright);
+  background: rgba(79, 140, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.ratio-preview {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid var(--blue-bright);
+  border-radius: 3px;
+}
+
+.ratio-preview.square { width: 70px; height: 70px; }
+.ratio-preview.portrait { width: 62px; height: 78px; }
+.ratio-preview.landscape { width: 90px; height: 50px; }
+
+.crop-editor-frame {
+  width: 70vw;
+  max-width: 480px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 22px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+}
+
+.crop-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#crop-editor-image {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#crop-editor-video {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crop-editor-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 0 9999px rgba(5, 8, 16, 0.6);
+  cursor: grab;
+}
+
+.crop-editor-overlay:active {
+  cursor: grabbing;
+}
+
+.crop-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.crop-modal-actions .btn-primary,
+.crop-modal-actions .btn-secondary {
+  flex: none;
+  min-width: 160px;
+}
+
+.hidden { display: none !important; }
+
+/* =========================================================
+   ACCIONES SOBRE MINIATURAS
+========================================================= */
+
+.thumbnail .thumb-actions {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: 0.2s ease;
+}
+
+.thumbnail:hover .thumb-actions {
+  opacity: 1;
+}
+
+.thumbnail .thumb-actions button {
+  flex: 1;
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.thumbnail .btn-edit-size {
+  background: rgba(37, 99, 235, 0.8);
+}
+
+.thumbnail .btn-edit-size:hover {
+  background: rgba(37, 99, 235, 0.95);
+}
+
+.thumbnail .btn-delete-thumb {
+  background: rgba(220, 38, 38, 0.8);
+}
+
+.thumbnail .btn-delete-thumb:hover {
+  background: rgba(220, 38, 38, 0.95);
+}
+
+.thumbnail {
+  position: relative;
+}
+
+#btn-editar-tamano {
+  width: 100%;
+}
+
+/* =========================================================
+   VIDEO — miniatura y vista previa
+========================================================= */
+
+.thumbnail video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-carousel-item.video-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-carousel-item.video-item video {
+  max-width: 100%;
+  max-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.video-mute-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 2;
+  background: rgba(9, 13, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.video-mute-btn:hover {
+  background: var(--blue);
+}
+
+.video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background: rgba(9, 13, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.2s ease;
+}
+
+.video-play-btn:hover {
+  background: var(--red);
+}
+/* =========================================================
+   OVERLAY DE ESTADO (subiendo / publicado)
+========================================================= */
+
+.status-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 16, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+}
+
+.status-overlay.hidden { display: none; }
+
+.status-box {
+  background: #0c1120;
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  padding: 36px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  min-width: 260px;
+}
+
+.status-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--blue-bright);
+  animation: girar 0.8s linear infinite;
+}
+
+.status-spinner.hidden { display: none; }
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+.status-check {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+#status-text {
+  font-family: 'Sora', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
+/* =========================================================
+   CAMPOS CON ERROR DE VALIDACIÓN
+========================================================= */
+
+.campo-error {
+  border-color: var(--red-bright) !important;
+  box-shadow: 0 0 0 4px rgba(255, 84, 104, 0.18) !important;
+}
+
+.image-upload.campo-error {
+  border-color: var(--red-bright) !important;
+}
+
+.form-error-msg {
+  color: var(--red-bright);
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+  display: none;
+}
+
+.form-error-msg.visible {
+  display: block;
 }

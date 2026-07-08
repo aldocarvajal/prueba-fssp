@@ -1,168 +1,370 @@
-body {
+* =========================================================
+   TIPOGRAFÍA — Sora para títulos/acentos, Inter para cuerpo
+   (idéntico a la página de Añadir Publicación)
+========================================================= */
+ 
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+ 
+/* =========================================================
+   RESET GENERAL
+========================================================= */
+ 
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ 
+/* =========================================================
+   TOKENS DE DISEÑO
+   Misma paleta institucional que Añadir Publicación.
+========================================================= */
+ 
+:root {
+  --bg-deep: #090d1a;
+  --bg-glow-blue: rgba(29, 78, 216, 0.16);
+  --bg-glow-red: rgba(220, 38, 38, 0.12);
+ 
+  --panel: rgba(255, 255, 255, 0.045);
+  --panel-border: rgba(255, 255, 255, 0.09);
+ 
+  --blue: #2563eb;
+  --blue-bright: #4f8cff;
+  --red: #dc2626;
+  --red-bright: #ff5468;
+  --gold: #f5b942;
+ 
+  --text: #eef1fb;
+  --text-muted: rgba(238, 241, 251, 0.62);
+  --text-faint: rgba(238, 241, 251, 0.38);
+ 
+  --ribbon: linear-gradient(90deg, var(--red) 0%, var(--red-bright) 30%, var(--blue-bright) 70%, var(--blue) 100%);
+}
+ 
+/* =========================================================
+   FONDO GENERAL DE LA PÁGINA
+========================================================= */
+ 
+body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f5f7fa, #e6ebf5);
-  color: #1a1a1a;
+ 
+  background:
+    radial-gradient(circle at 12% 8%, var(--bg-glow-red), transparent 42%),
+    radial-gradient(circle at 88% 92%, var(--bg-glow-blue), transparent 45%),
+    var(--bg-deep);
+ 
+  color: var(--text);
+  min-height: 100vh;
 }
-
-.nav-bar {
-  padding: 20px;
+ 
+h1, h2, h3, h4, .card-title, .btn-primary, .btn-secondary {
+  font-family: 'Sora', sans-serif;
 }
-
-h2 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 20px;
+ 
+/* =========================================================
+   CONTENEDOR GENERAL
+========================================================= */
+ 
+.dashboard-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
 }
-
-.portadas-section, .publicaciones-section {
-  margin: 30px;
-  background: rgba(255,255,255,0.85);
+ 
+/* =========================================================
+   BARRA SUPERIOR — centrada, idéntica a Añadir Publicación
+========================================================= */
+ 
+.top-bar {
+  display: flex;
+  justify-content: center;
+ 
+  padding-top: 25px;
+  padding-bottom: 10px;
+}
+ 
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+ 
+  padding: 13px 22px;
+ 
+  border-radius: 14px;
+ 
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
+ 
+  color: #ffffff;
+  text-decoration: none;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+ 
   backdrop-filter: blur(12px);
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+ 
+  transition: all 0.3s ease;
 }
-
-.portadas-grid, .publicaciones-grid {
+ 
+.back-btn:hover {
+  transform: translateY(-2px);
+ 
+  background: rgba(220, 38, 38, 0.1);
+  border-color: var(--red-bright);
+ 
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2);
+}
+ 
+/* =========================================================
+   TÍTULOS DE SECCIÓN
+========================================================= */
+ 
+h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+ 
+/* =========================================================
+   SECCIONES (portadas / publicaciones)
+========================================================= */
+ 
+.portadas-section,
+.publicaciones-section {
+  position: relative;
+ 
+  margin: 24px 0;
+ 
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(18px);
+ 
+  padding: 30px 28px 28px;
+  border-radius: 22px;
+ 
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+ 
+  overflow: hidden;
+ 
+  transition: 0.3s ease;
+}
+ 
+.portadas-section::before,
+.publicaciones-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--ribbon);
+}
+ 
+.portadas-section:hover,
+.publicaciones-section:hover {
+  transform: translateY(-3px);
+}
+ 
+/* =========================================================
+   GRILLAS
+========================================================= */
+ 
+.portadas-grid,
+.publicaciones-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
 }
-/* Publicaciones disponibles (abajo) */
-.publicaciones-grid .card img {
+ 
+/* =========================================================
+   MINIATURAS DENTRO DE LAS TARJETAS
+========================================================= */
+ 
+.publicaciones-grid .card img,
+.publicaciones-grid .card video {
   width: 100%;
   height: 140px;
   object-fit: cover;
+  display: block;
 }
-
-/* Portadas seleccionadas (arriba) */
+ 
 .portadas-grid .card .image-wrapper {
   position: relative;
-  height: 140px;   /* ✅ altura fija */
+  height: 140px;
   overflow: hidden;
 }
-
+ 
+/* =========================================================
+   TARJETA (card)
+========================================================= */
+ 
 .card {
-  background: rgba(255,255,255,0.9);
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
+ 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  transform: translateY(-5px);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.4);
+  border-color: var(--blue-bright);
 }
-
-
+ 
 .card-content {
-  padding: 15px;
+  padding: 16px;
 }
-
+ 
 .card-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
   margin-bottom: 8px;
 }
-
+ 
 .card-meta {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 12px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
 }
-
-.btn-primary, .btn-secondary {
+ 
+/* =========================================================
+   BOTONES
+========================================================= */
+ 
+.btn-primary,
+.btn-secondary {
   display: inline-block;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13.5px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
+ 
 .btn-primary {
-  background: linear-gradient(135deg, #001f8c, #0033cc);
+  background: linear-gradient(120deg, var(--red) 0%, var(--red-bright) 45%, var(--blue-bright) 100%);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 26px rgba(220, 38, 38, 0.25);
 }
+ 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #0033cc, #0055ff);
   transform: translateY(-3px);
+  box-shadow: 0 16px 38px rgba(79, 140, 255, 0.32);
 }
-
+ 
 .btn-secondary {
-  background: rgba(255,255,255,0.8);
-  color: #333;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
 }
+ 
 .btn-secondary:hover {
-  background: rgba(255,255,255,0.95);
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--blue-bright);
+  transform: translateY(-2px);
 }
-
+ 
+.btn-secondary:disabled,
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+ 
+/* =========================================================
+   PLACEHOLDER (espacio vacío / sin contenido)
+========================================================= */
+ 
 .placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 200px;
-  background: rgba(0,0,0,0.05);
-  border-radius: 12px;
-  font-size: 14px;
-  color: #777;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--panel-border);
+  border-radius: 16px;
+  font-size: 13.5px;
+  color: var(--text-faint);
+  text-align: center;
+  padding: 12px;
 }
-
-/* Modal */
+ 
+/* =========================================================
+   MODAL DE RECORTE
+   ⚠️ Lo estructural (position, aspect-ratio, transform de
+   centrado) se mantiene intacto: el JS depende de estas
+   medidas exactas para calcular el recorte.
+========================================================= */
+ 
 .modal {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(5, 8, 16, 0.82);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10000;
 }
+ 
 .modal.hidden { display: none; }
-
+ 
 .modal-content {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
+  background: #0c1120;
+  border: 1px solid var(--panel-border);
+  border-radius: 22px;
+  padding: 28px;
   max-width: 80vw;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
 }
-
+ 
 .editor-frame {
-  position: relative;   /* 🔹 clave para que las flechas se posicionen dentro */
+  position: relative;
   width: 80vw;
   max-width: 490px;
   aspect-ratio: 1 / 1;
-  margin: 10px auto;
+  margin: 14px auto;
   background: #000;
+  border-radius: 16px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid var(--panel-border);
 }
-
+ 
 .modal-content .btn-primary {
-  align-self: center;  /* 🔹 centra horizontalmente */
+  align-self: center;
+  margin-top: 8px;
+  min-width: 180px;
 }
-
+ 
 .close {
   align-self: flex-end;
-  font-size: 28px;
+  font-size: 26px;
   cursor: pointer;
-  color: #333;
+  color: var(--text-muted);
+  transition: 0.2s ease;
 }
-
-.arrow:hover {
-  background: rgba(0,0,0,0.8);
+ 
+.close:hover {
+  color: var(--red-bright);
 }
+ 
 .image-container {
   position: relative;
   width: 100%;
@@ -173,67 +375,114 @@ h2 {
   align-items: center;
   overflow: hidden;
 }
-
+ 
 #editor-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
-
+ 
+/* =========================================================
+   FLECHAS DE NAVEGACIÓN — mismo diseño exacto que
+   .carousel-btn de la vista previa en Añadir Publicación.
+========================================================= */
+ 
 .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 40px;
-  color: white;
-  background: rgba(0,0,0,0.6);
-  border: none;
+ 
+  background: rgba(9, 13, 26, 0.65);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+ 
+  padding: 9px 12px;
+ 
+  border-radius: 10px;
+ 
+  font-size: 18px;
+  line-height: 1;
+ 
   cursor: pointer;
-  padding: 12px;
+ 
   z-index: 10;
-  border-radius: 50%;
+ 
+  transition: 0.2s ease;
 }
-
-.arrow.left { left: 5px; }
-.arrow.right { right: 5px; }
-
-
-
-/* Overlay con rectángulo fijo */
+ 
+.arrow:hover {
+  background: var(--blue);
+  border-color: var(--blue-bright);
+}
+ 
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+ 
+/* Overlay de recorte 16:9 — mismo estilo que .crop-editor-overlay */
 .crop-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 90%;              /* ancho relativo dentro del contenedor */
-  aspect-ratio: 16 / 9;    /* proporción fija */
+  width: 90%;
+  aspect-ratio: 16 / 9;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); 
-  pointer-events: auto;    /* ✅ ahora sí recibe eventos */
-  border: 2px solid #fff;  
-  cursor: grab;            /* ✅ muestra mano para arrastrar */
+  box-shadow: 0 0 0 9999px rgba(5, 8, 16, 0.6);
+  pointer-events: auto;
+  border: 2px solid var(--gold);
+  cursor: grab;
 }
+ 
 .crop-overlay:active {
-  cursor: grabbing;        /* ✅ cambia al arrastrar */
+  cursor: grabbing;
 }
-
-
-
-
+ 
 #editor-image.dragging {
   cursor: grabbing;
 }
-
+ 
+/* =========================================================
+   MODAL DE CONFIRMACIÓN (reemplaza confirm() nativo)
+========================================================= */
+ 
+.confirm-modal-content {
+  max-width: 380px;
+  gap: 18px;
+}
+ 
+.confirm-modal-text {
+  font-size: 15px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.55;
+  margin-bottom: 4px;
+}
+ 
+.confirm-modal-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+ 
+.confirm-modal-actions .btn-secondary,
+.confirm-modal-actions .btn-primary {
+  flex: 1;
+}
+ 
+/* =========================================================
+   DRAG & DROP DE PORTADAS
+========================================================= */
+ 
 .portadas-grid .card {
   cursor: grab;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
-
+ 
 .portadas-grid .card.dragging {
   opacity: 0.4;
   cursor: grabbing;
 }
-
+ 
 .portadas-grid .card.drag-over {
-  outline: 3px dashed #0033cc;
+  outline: 3px dashed var(--blue-bright);
   outline-offset: -3px;
 }

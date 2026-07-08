@@ -15,41 +15,46 @@
         <p>Ayuda real, cambio verdadero.</p>
       </div>
     </div>
-
-<div class="header-right">
-  <div class="social-menu">
-    <!-- Íconos sociales -->
-    <img src="assets/images/instablanco.png" alt="Instagram">
-    <img src="assets/images/facebookblanco.png" alt="Facebook">
-    <img src="assets/images/telefonoblanco.png" alt="Teléfono">
-
-    <!-- Botones de login/logout -->
-    <button id="login-google" class="login-link">Iniciar Sesión</button>
-    <button id="logout" class="login-link" style="display:none;">Cerrar Sesión</button>
-
-    <!-- Perfil de usuario (aparece después de login) -->
-    <div id="user-profile" class="user-profile" style="display:none;">
-      <div class="avatar-container">
-        <img id="user-avatar" class="avatar" src="" alt="Avatar">
-        <div id="user-initials" class="avatar initials"></div>
+ 
+    <div class="header-right">
+      <div class="social-menu">
+        <!-- Íconos sociales -->
+        <img src="assets/images/instablanco.png" alt="Instagram">
+        <img src="assets/images/facebookblanco.png" alt="Facebook">
+        <img src="assets/images/telefonoblanco.png" alt="Teléfono">
+ 
+        <!-- Botón login -->
+        <button id="login-google" class="login-link">Iniciar sesión</button>
+ 
+        <!-- Perfil de usuario (aparece después de login) -->
+        <div id="user-profile" class="user-profile" style="display:none;">
+          <button class="user-chip" id="user-chip-btn" type="button">
+            <span class="avatar-container">
+              <img id="user-avatar" class="avatar" src="" alt="Avatar">
+              <div id="user-initials" class="avatar initials"></div>
+            </span>
+            <span id="welcome-text" class="chip-name"></span>
+            <span class="chip-chevron">▾</span>
+          </button>
+ 
+          <!-- Menú desplegable -->
+          <div class="dropdown-menu">
+            <div class="dropdown-header">
+              <img id="dropdown-avatar" src="" alt="">
+              <h4 id="dropdown-name"></h4>
+              <p id="user-email"></p>
+            </div>
+            <a href="#"><span>💬</span> Mis comentarios</a>
+            <a href="#"><span>❤️</span> Mis me gusta</a>
+            <div class="dropdown-separator"></div>
+            <a href="#" id="logout-link"><span>🚪</span> Cerrar sesión</a>
+          </div>
+        </div>
+ 
+        <!-- Menú hamburguesa -->
+        <button class="hamburger" id="hamburger-btn">&#9776;</button>
       </div>
-      <span id="welcome-text"></span>
-
-      <!-- Menú desplegable -->
-<div class="dropdown-menu">
-  <p id="user-email"></p>
-  <a href="#"><span>💬</span> Mis comentarios</a>
-  <a href="#"><span>❤️</span> Mis me gusta</a>
-  <div class="dropdown-separator"></div>
-  <a href="#" id="logout-link"><span>🚪</span> Cerrar sesión</a>
-</div>
-
-    </div>
-
-    <!-- Menú hamburguesa -->
-    <button class="hamburger">&#9776;</button>
-  </div>
-
+ 
       <!-- Menú principal -->
       <nav class="main-nav">
         <ul>
@@ -60,28 +65,31 @@
           <li><a href="#">Buscar...</a></li>
         </ul>
       </nav>
-
-      <!-- Menú hamburguesa -->
-<nav class="hamburger-menu">
-  <ul>
-<li>
-  <a href="pages/editar portada/" id="menu-editar">
-    Editar Portada
-  </a>
-</li>
-<li>
-  <a href="pages/añadir publicaciones/index.html" id="menu-publicaciones">
-    Añadir Publicaciones
-  </a>
-</li>
-    <li><a href="#" id="menu-feed">Publicaciones y Feed</a></li>
-    <li><a href="pages/roles/index.html" id="menu-roles">Administrar Roles</a></li>
-  </ul>
-</nav>
-
+ 
+      <!-- Drawer hamburguesa -->
+      <nav class="hamburger-menu">
+        <div class="hamburger-menu-header">
+          <span>Menú</span>
+          <button class="hamburger-close" id="hamburger-close" type="button">✕</button>
+        </div>
+        <ul>
+          <li>
+            <a href="pages/editar portada/" id="menu-editar">
+              Editar Portada
+            </a>
+          </li>
+          <li>
+            <a href="pages/añadir publicaciones/index.html" id="menu-publicaciones">
+              Añadir Publicaciones
+            </a>
+          </li>
+          <li><a href="#" id="menu-feed">Publicaciones y Feed</a></li>
+          <li><a href="pages/roles/index.html" id="menu-roles">Administrar Roles</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
-
+ 
   <!-- Carrusel -->
   <section class="carousel">
     <div class="slides">
@@ -91,7 +99,7 @@
       <img src="assets/images/Portada-4.jpeg" alt="Portada 4">
     </div>
   </section>
-
+ 
   <!-- Botones principales -->
   <div class="full-width-buttons">
     <a href="#proyectos" class="btn btn-blue">
@@ -111,14 +119,14 @@
       <div class="btn-subtitle">Uso claro y responsable de los recursos</div>
     </a>
   </div>
-
+ 
   <!-- Impacto -->
   <section class="impacto-premium">
     <div class="impacto-header">
       <h2>Impacto de nuestro trabajo</h2>
       <p>Cada acción cuenta. Estos son algunos de los resultados alcanzados gracias al apoyo de nuestra comunidad.</p>
     </div>
-
+ 
     <div class="impacto-stats">
       <div class="blob" data-target="150">
         <img src="assets/images/PERSONAS-BENEFICIADAS.png" alt="Personas beneficiadas">
@@ -142,14 +150,14 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- Testimonios -->
   <section class="testimonios-premium">
     <div class="testimonios-header">
       <h2>Lo que dicen quienes han sido parte de nuestra labor</h2>
       <p>Cada historia refleja el impacto de la solidaridad y el compromiso de quienes hacen posible nuestra misión.</p>
     </div>
-
+ 
     <div class="testimonios-carousel">
       <div class="testimonio">
         <div class="quote">“</div>
@@ -162,7 +170,7 @@
           </div>
         </div>
       </div>
-
+ 
       <div class="testimonio">
         <div class="quote">“</div>
         <p>"Participar como voluntario fue una experiencia que cambió mi vida. Aprendí que pequeños actos pueden generar grandes cambios."</p>
@@ -175,14 +183,15 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="carousel-indicators">
       <span class="active"></span>
       <span></span>
     </div>
   </section>
-
+ 
   <!-- Script principal -->
   <script type="module" src="index.js"></script>
 </body>
 </html>
+ 
