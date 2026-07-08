@@ -66,6 +66,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   showTestimonio(index);
   setInterval(nextTestimonio, 6000);
+
+  /* =========================================================
+     UI SEGÚN SESIÓN
+  ========================================================= */
+
+  // 👇 PEGA AQUÍ LA FUNCIÓN NUEVA
+  async function cargarAvatarSeguro(imgEl, url) {
+    if (!url) return false;
+
+    let finalUrl = url;
+    if (url.includes("googleusercontent.com") && !url.includes("=s")) {
+      finalUrl = url + "=s200-c";
+    }
+
+    try {
+      const preload = new Image();
+      preload.referrerPolicy = "no-referrer";
+      preload.src = finalUrl;
+
+      if (preload.decode) {
+        await preload.decode();
+      } else {
+        await new Promise((res, rej) => {
+          preload.onload = res;
+          preload.onerror = rej;
+        });
+      }
+
+      imgEl.src = finalUrl;
+      imgEl.classList.add("loaded");
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
  
   /* =========================================================
      UI SEGÚN SESIÓN
@@ -105,23 +141,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
  
       if (photo) {
-        // Solo mostramos la <img> cuando confirmamos que cargó bien.
-        // Antes de eso queda oculta (opacity:0 vía CSS) para que nunca
-        // se vea el ícono de "imagen rota" a medio cargar.
         avatar.style.display = "block";
         initials.style.display = "none";
         dropdownAvatar.style.display = "block";
- 
-        avatar.onload = () => avatar.classList.add("loaded");
-        dropdownAvatar.onload = () => dropdownAvatar.classList.add("loaded");
- 
-        // Si la foto de Google falla (bloqueo de referrer, foto borrada, etc.)
-        // caemos a las iniciales en vez de mostrar el ícono roto.
-        avatar.onerror = mostrarIniciales;
-        dropdownAvatar.onerror = () => { dropdownAvatar.style.display = "none"; };
- 
-        avatar.src = photo;
-        dropdownAvatar.src = photo;
+
+        cargarAvatarSeguro(avatar, photo).then((ok) => {
+          if (!ok) mostrarIniciales();
+        });
+        cargarAvatarSeguro(dropdownAvatar, photo).then((ok) => {
+          if (!ok) dropdownAvatar.style.display = "none";
+        });
       } else {
         mostrarIniciales();
       }
