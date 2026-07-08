@@ -89,14 +89,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const fullName = user.user_metadata.full_name || user.email;
       const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
  
-      if (photo) {
-        avatar.src = photo;
-        avatar.style.display = "block";
-        initials.style.display = "none";
+      // Reset de estado visual en cada actualización, para no arrastrar
+      // el "loaded" de una sesión/avatar anterior
+      avatar.classList.remove("loaded");
+      dropdownAvatar.classList.remove("loaded");
  
-        dropdownAvatar.src = photo;
-        dropdownAvatar.style.display = "block";
-      } else {
+      function mostrarIniciales() {
         avatar.style.display = "none";
         const parts = fullName.trim().split(" ");
         const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
@@ -104,6 +102,28 @@ document.addEventListener("DOMContentLoaded", () => {
         initials.style.display = "flex";
  
         dropdownAvatar.style.display = "none";
+      }
+ 
+      if (photo) {
+        // Solo mostramos la <img> cuando confirmamos que cargó bien.
+        // Antes de eso queda oculta (opacity:0 vía CSS) para que nunca
+        // se vea el ícono de "imagen rota" a medio cargar.
+        avatar.style.display = "block";
+        initials.style.display = "none";
+        dropdownAvatar.style.display = "block";
+ 
+        avatar.onload = () => avatar.classList.add("loaded");
+        dropdownAvatar.onload = () => dropdownAvatar.classList.add("loaded");
+ 
+        // Si la foto de Google falla (bloqueo de referrer, foto borrada, etc.)
+        // caemos a las iniciales en vez de mostrar el ícono roto.
+        avatar.onerror = mostrarIniciales;
+        dropdownAvatar.onerror = () => { dropdownAvatar.style.display = "none"; };
+ 
+        avatar.src = photo;
+        dropdownAvatar.src = photo;
+      } else {
+        mostrarIniciales();
       }
  
       // El "nombre" del chip queda corto (solo primer nombre) para no
