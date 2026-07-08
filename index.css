@@ -228,7 +228,7 @@
   height: 36px !important;
   border-radius: 50%;
   object-fit: cover !important;
-  object-position: 50% 50%;
+  object-position: 70% 50%;
   display: block;
   opacity: 0;
   transition: opacity 0.25s ease;
