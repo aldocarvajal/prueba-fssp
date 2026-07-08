@@ -209,6 +209,7 @@
  
 /* Contenedor circular del avatar */
 .avatar-container {
+  display: inline-flex;
   position: relative;
   width: 36px;
   height: 36px;
