@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const hamburgerBtn = document.getElementById("hamburger-btn");
   const hamburgerClose = document.getElementById("hamburger-close");
   const hamburgerMenu = document.querySelector(".hamburger-menu");
+  document.body.appendChild(hamburgerMenu); // saca el menú del header para que no quede atrapado detrás del overlay
   const blobs = document.querySelectorAll(".blob");
   const testimonios = document.querySelectorAll(".testimonio");
   const indicators = document.querySelectorAll(".carousel-indicators span");
@@ -66,36 +67,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   showTestimonio(index);
   setInterval(nextTestimonio, 6000);
-
  
-function updateUI(session) {
+ 
+  function updateUI(session) {
     const loginBtn = document.getElementById("login-google");
     const profile = document.getElementById("user-profile");
     const chipName = document.getElementById("welcome-text");
-    const dropdownName = document.getElementById("dropdown-name");
     const email = document.getElementById("user-email");
     const avatarImg = document.getElementById("chip-avatar-img");
     const avatarInitials = document.getElementById("chip-avatar-initials");
-
+ 
     if (session) {
       loginBtn.style.display = "none";
       profile.style.display = "flex";
-
+ 
       const user = session.user;
       const metadata = user.user_metadata || {};
       const fullName = metadata.full_name || metadata.name || user.email;
       const avatarUrl = metadata.avatar_url || metadata.picture || "";
-
+ 
       // Separar primer nombre y primer apellido
       const partesNombre = fullName.trim().split(/\s+/);
       const primerNombre = partesNombre[0] || "";
       const primerApellido = partesNombre.length > 1 ? partesNombre[1] : "";
       const nombreCorto = primerApellido ? `${primerNombre} ${primerApellido}` : primerNombre;
-
+ 
       chipName.textContent = nombreCorto;
-      dropdownName.textContent = fullName;
       email.textContent = user.email;
-
+ 
       // Mostrar foto de Google, o iniciales si no tiene foto
       if (avatarUrl) {
         avatarImg.src = avatarUrl;
@@ -118,6 +117,7 @@ function updateUI(session) {
       avatarImg.src = "";
     }
   }
+ 
   // Mostrar/ocultar el link de "Administrar Roles" según el rol del usuario
   async function actualizarVisibilidadRoles(session) {
     const itemRoles = document.getElementById("menu-roles-item");
