@@ -66,107 +66,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   showTestimonio(index);
   setInterval(nextTestimonio, 6000);
- 
-  /* =========================================================
-     UI SEGÚN SESIÓN
-  ========================================================= */
- 
-  // Carga un <img> de forma segura: decodifica EL MISMO elemento que se
-  // va a mostrar (no un objeto Image() separado), así nunca se revela
-  // a medio decodificar. Incluye logs de diagnóstico con prefijo [AVATAR].
-  async function cargarAvatarSeguro(imgEl, url, nombre) {
-    if (!url) {
-      console.log(`[AVATAR] ${nombre}: no hay URL de foto, se usará inicial.`);
-      return false;
-    }
- 
-    let finalUrl = url;
-    if (url.includes("googleusercontent.com") && !url.includes("=s")) {
-      finalUrl = url + "=s200-c";
-    }
- 
-    console.log(`[AVATAR] ${nombre}: intentando cargar ->`, finalUrl);
- 
-    imgEl.classList.remove("loaded");
-    imgEl.src = finalUrl;
- 
-    try {
-      if (imgEl.decode) {
-        await imgEl.decode(); // decodifica el elemento real, no una copia
-        console.log(`[AVATAR] ${nombre}: decode() OK. natural=${imgEl.naturalWidth}x${imgEl.naturalHeight}`);
-      } else {
-        await new Promise((res, rej) => {
-          imgEl.onload = res;
-          imgEl.onerror = rej;
-        });
-        console.log(`[AVATAR] ${nombre}: load event OK (sin decode). natural=${imgEl.naturalWidth}x${imgEl.naturalHeight}`);
-      }
-      imgEl.classList.add("loaded");
-      console.log(`[AVATAR] ${nombre}: clase "loaded" agregada. Debería verse bien ahora.`);
-      return true;
-    } catch (e) {
-      console.log(`[AVATAR] ${nombre}: FALLÓ la carga/decodificación ->`, e);
-      return false;
-    }
-  }
+
  
   function updateUI(session) {
     const loginBtn = document.getElementById("login-google");
     const profile = document.getElementById("user-profile");
-    const avatar = document.getElementById("user-avatar");
-    const initials = document.getElementById("user-initials");
     const chipName = document.getElementById("welcome-text");
-    const dropdownAvatar = document.getElementById("dropdown-avatar");
     const dropdownName = document.getElementById("dropdown-name");
     const email = document.getElementById("user-email");
- 
-    console.log("[AVATAR] updateUI llamado. ¿Hay sesión?", !!session);
- 
+
     if (session) {
       loginBtn.style.display = "none";
       profile.style.display = "flex";
- 
+
       const user = session.user;
       const fullName = user.user_metadata.full_name || user.email;
-      const photo = user.user_metadata.avatar_url || user.user_metadata.picture;
- 
-      console.log("[AVATAR] user_metadata completo:", user.user_metadata);
-      console.log("[AVATAR] avatar_url:", user.user_metadata.avatar_url);
-      console.log("[AVATAR] picture:", user.user_metadata.picture);
-      console.log("[AVATAR] photo elegida:", photo);
- 
-      // Reset de estado visual en cada actualización, para no arrastrar
-      // el "loaded" de una sesión/avatar anterior
-      avatar.classList.remove("loaded");
-      dropdownAvatar.classList.remove("loaded");
- 
-      function mostrarIniciales() {
-        avatar.style.display = "none";
-        const parts = fullName.trim().split(" ");
-        const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
-        initials.textContent = letters.toUpperCase();
-        initials.style.display = "flex";
- 
-        dropdownAvatar.style.display = "none";
-      }
- 
-      if (photo) {
-        avatar.style.display = "block";
-        initials.style.display = "none";
-        dropdownAvatar.style.display = "block";
- 
-        cargarAvatarSeguro(avatar, photo, "AVATAR (arriba)").then((ok) => {
-          if (!ok) mostrarIniciales();
-        });
-        cargarAvatarSeguro(dropdownAvatar, photo, "DROPDOWN AVATAR").then((ok) => {
-          if (!ok) dropdownAvatar.style.display = "none";
-        });
-      } else {
-        mostrarIniciales();
-      }
- 
-      // El "nombre" del chip queda corto (solo primer nombre) para no
-      // desbordar el pill; el dropdown sí muestra el nombre completo.
+
       chipName.textContent = fullName.split(" ")[0];
       dropdownName.textContent = fullName;
       email.textContent = user.email;
