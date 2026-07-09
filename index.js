@@ -68,29 +68,56 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(nextTestimonio, 6000);
 
  
-  function updateUI(session) {
+function updateUI(session) {
     const loginBtn = document.getElementById("login-google");
     const profile = document.getElementById("user-profile");
     const chipName = document.getElementById("welcome-text");
     const dropdownName = document.getElementById("dropdown-name");
     const email = document.getElementById("user-email");
+    const avatarImg = document.getElementById("chip-avatar-img");
+    const avatarInitials = document.getElementById("chip-avatar-initials");
 
     if (session) {
       loginBtn.style.display = "none";
       profile.style.display = "flex";
 
       const user = session.user;
-      const fullName = user.user_metadata.full_name || user.email;
+      const metadata = user.user_metadata || {};
+      const fullName = metadata.full_name || metadata.name || user.email;
+      const avatarUrl = metadata.avatar_url || metadata.picture || "";
 
-      chipName.textContent = fullName.split(" ")[0];
+      // Separar primer nombre y primer apellido
+      const partesNombre = fullName.trim().split(/\s+/);
+      const primerNombre = partesNombre[0] || "";
+      const primerApellido = partesNombre.length > 1 ? partesNombre[1] : "";
+      const nombreCorto = primerApellido ? `${primerNombre} ${primerApellido}` : primerNombre;
+
+      chipName.textContent = nombreCorto;
       dropdownName.textContent = fullName;
       email.textContent = user.email;
+
+      // Mostrar foto de Google, o iniciales si no tiene foto
+      if (avatarUrl) {
+        avatarImg.src = avatarUrl;
+        avatarImg.style.display = "block";
+        avatarInitials.style.display = "none";
+        avatarImg.onerror = () => {
+          // Si la foto no carga, usar iniciales como respaldo
+          avatarImg.style.display = "none";
+          avatarInitials.style.display = "flex";
+          avatarInitials.textContent = primerNombre.charAt(0) + primerApellido.charAt(0);
+        };
+      } else {
+        avatarImg.style.display = "none";
+        avatarInitials.style.display = "flex";
+        avatarInitials.textContent = primerNombre.charAt(0) + primerApellido.charAt(0);
+      }
     } else {
       loginBtn.style.display = "block";
       profile.style.display = "none";
+      avatarImg.src = "";
     }
   }
- 
   // Mostrar/ocultar el link de "Administrar Roles" según el rol del usuario
   async function actualizarVisibilidadRoles(session) {
     const itemRoles = document.getElementById("menu-roles-item");

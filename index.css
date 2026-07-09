@@ -207,7 +207,33 @@
   outline: none;
 }
  
- 
+.chip-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.chip-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.chip-avatar-initials {
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+}
+
 .chip-name {
   color: white;
   font-weight: bold;
